@@ -102,7 +102,7 @@
     border-radius: 4px;
   }
   .wrap {
-    max-width: 1040px;
+    max-width: 1240px;
     margin: 0 auto;
     padding: 0 16px;
   }
@@ -263,7 +263,7 @@
   /* ---------- Sections ---------- */
   section.block {
     display: grid;
-    grid-template-columns: 220px 1fr;
+    grid-template-columns: 260px 1fr;
     gap: 40px;
     padding: 56px 0;
     border-top: 1px solid var(--line);
@@ -569,6 +569,70 @@
   .skill-row:nth-child(4) { --k: var(--rose);   --k-soft: var(--rose-soft); }
   .skill-row:nth-child(5) { --k: var(--amber);  --k-soft: var(--amber-soft); }
 
+  /* project buttons */
+  .links { gap: 10px 12px; margin-top: 4px; }
+  .pbtn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    text-decoration: none;
+    border: 2px solid var(--c);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .pbtn svg { width: 17px; height: 17px; flex: none; }
+  .pbtn.solid { background: var(--c); color: #fff; }
+  .pbtn.outline { color: var(--c); background: var(--c-soft); }
+  .pbtn:hover { transform: translateY(-2px); box-shadow: 0 6px 16px color-mix(in srgb, var(--c) 30%, transparent); }
+  :root[data-theme="dark"] .pbtn.solid { color: #0E1729; }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .pbtn.solid { color: #0E1729; }
+  }
+
+  /* dashboard thumbnails */
+  .thumb {
+    position: relative;
+    display: block;
+    margin: 6px 0 16px;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    aspect-ratio: 16 / 8;
+    background: var(--c-soft);
+  }
+  .thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+    display: block;
+    transition: transform 0.3s ease;
+  }
+  .thumb-hint {
+    position: absolute;
+    left: 12px;
+    bottom: 12px;
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #fff;
+    background: color-mix(in srgb, var(--c) 92%, black);
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+  .thumb:hover img { transform: scale(1.03); }
+  .thumb:hover .thumb-hint, .thumb:focus-visible .thumb-hint { opacity: 1; }
+
+  @media (min-width: 861px) {
+    .wrap { padding: 0 40px; }
+    .hero { padding: 88px 0 56px; gap: 72px; }
+  }
+  @media (hover: none) { .thumb-hint { opacity: 1; } }
+
   /* course lists under each certificate */
   .meter {
     grid-column: 1 / -1;
@@ -654,6 +718,7 @@
     .series { animation: none; stroke-dashoffset: 0; }
     .forecast, .pt-next, .area { animation: none; opacity: 1; }
     .pulse { animation: none; }
+    .pbtn, .thumb img { transition: none; }
   }
 </style>
 </head>
@@ -779,14 +844,19 @@
             <h3>How Oil Prices Affect the Malaysian Ringgit (2005–2026)</h3>
             <span class="key done">Live</span>
           </div>
+          <!-- Screenshot: save it as images/ringgit-dashboard.png -->
+          <a class="thumb" href="https://ringgit-oil-analysis.streamlit.app" target="_blank" rel="noopener">
+            <img src="images/ringgit-dashboard.png" alt="Screenshot of the oil price and ringgit dashboard" loading="lazy" onerror="this.parentElement.remove()">
+            <span class="thumb-hint">Open the live dashboard</span>
+          </a>
           <p>Analysed 20 years of crude oil prices and USD/MYR exchange rate data to measure how changes in oil prices affect the value of the Malaysian ringgit, using correlation and regression analysis in Python.</p>
           <p>Built and deployed an interactive Streamlit dashboard that walks through the analysis step by step, from data preparation to the final results. The dashboard updates automatically with the latest market data on weekdays. Markets are closed on weekends, so no new values are added then.</p>
           <ul class="tags" aria-label="Tools">
             <li>Python</li><li>pandas</li><li>Correlation and regression</li><li>Streamlit</li>
           </ul>
           <div class="links">
-            <a class="link" href="https://ringgit-oil-analysis.streamlit.app" target="_blank" rel="noopener">Open the dashboard</a>
-            <a class="link" href="https://github.com/aamrhh/ringgit-oil-analysis" target="_blank" rel="noopener">View on GitHub</a>
+            <a class="pbtn solid" href="https://ringgit-oil-analysis.streamlit.app" target="_blank" rel="noopener"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M9 2h5v5M14 2 7.5 8.5M12 9.5V13a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h3.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Open the live dashboard</a>
+            <a class="pbtn outline" href="https://github.com/aamrhh/ringgit-oil-analysis" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 .5a11.5 11.5 0 0 0-3.64 22.41c.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.52-1.33-1.28-1.69-1.28-1.69-1.05-.71.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.77 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.84 1.19 3.1 0 4.42-2.7 5.4-5.26 5.68.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .5z"/></svg>View code on GitHub</a>
           </div>
         </article>
 
@@ -795,11 +865,18 @@
             <h3>Malaysian Blood Donation Trend Dashboard</h3>
             <span class="key done">Complete</span>
           </div>
+          <!-- Screenshot: save it as images/blood-donation-dashboard.png -->
+          <a class="thumb" href="https://github.com/aamrhh/malaysia-blood-donation-analysis" target="_blank" rel="noopener">
+            <img src="images/blood-donation-dashboard.png" alt="Screenshot of the Malaysian blood donation Power BI dashboard" loading="lazy" onerror="this.parentElement.remove()">
+            <span class="thumb-hint">View the project</span>
+          </a>
           <p>An interactive Power BI dashboard that shows blood donation trends in Malaysia, so it is easy to compare donations over time and spot changes.</p>
           <ul class="tags" aria-label="Tools">
             <li>Power BI</li><li>Python (pandas)</li><li>Data cleaning</li><li>Data visualisation</li>
           </ul>
-          <a class="link" href="https://github.com/aamrhh/malaysia-blood-donation-analysis" target="_blank" rel="noopener">View on GitHub</a>
+          <div class="links">
+            <a class="pbtn solid" href="https://github.com/aamrhh/malaysia-blood-donation-analysis" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 .5a11.5 11.5 0 0 0-3.64 22.41c.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.52-1.33-1.28-1.69-1.28-1.69-1.05-.71.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.77 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.84 1.19 3.1 0 4.42-2.7 5.4-5.26 5.68.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .5z"/></svg>View project on GitHub</a>
+          </div>
         </article>
 
       </div>
