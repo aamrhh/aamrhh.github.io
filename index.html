@@ -22,53 +22,59 @@
 <style>
   /* ---------- Colours (light mode) ---------- */
   :root {
-    --bg: #EDF3F9;
+    --bg: #F0EFF9;
     --surface: #FFFFFF;
     --ink: #15233A;
     --muted: #4F6178;
-    --grid: #D5E2EE;
-    --line: #C4D2E0;
+    --grid: #DDDAF0;
+    --line: #CBC8E2;
+    --wash: linear-gradient(180deg, #ECE8F8 0%, #EEF1FA 45%, #E6F4F3 100%);
     /* chart series colours */
     --teal: #0B7A84;   --teal-soft: #D6F0F0;
-    --violet: #6A4FD6; --violet-soft: #ECE7FD;
+    --violet: #6B58A8; --violet-soft: #ECE8F6;
     --blue: #2463C9;   --blue-soft: #E0EAFB;
-    --rose: #C2365F;   --rose-soft: #FBE2EA;
-    --amber: #B0700A;  --amber-soft: #FCEED3;
-    --focus: #6A4FD6;
+    --rose: #C42A72;   --rose-soft: #FCE4EF;
+    --coral: #B5502E;  --coral-soft: #FBE6DE;
+    --amber: #8F7420;  --amber-soft: #F8F1D6;
+    --focus: #6B58A8;
     color-scheme: light;
   }
 
   /* ---------- Colours (dark mode) ---------- */
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
-      --bg: #0E1729;
+      --bg: #111628;
       --surface: #16233B;
       --ink: #E5ECF5;
       --muted: #A0B0C4;
       --grid: #1C2C46;
+      --wash: none;
       --line: #2C3F5E;
       --teal: #4FD1C9;   --teal-soft: #123B44;
-      --violet: #A994FF; --violet-soft: #2A2552;
+      --violet: #B4A5E6; --violet-soft: #2B2850;
       --blue: #72A9FF;   --blue-soft: #1A2E54;
-      --rose: #FF7EA2;   --rose-soft: #45203A;
-      --amber: #F6BD55;  --amber-soft: #3D301A;
-      --focus: #A994FF;
+      --rose: #FF7FB8;   --rose-soft: #47213D;
+      --coral: #FF9A7A;  --coral-soft: #45281F;
+      --amber: #E6D28F;  --amber-soft: #34311F;
+      --focus: #B4A5E6;
       color-scheme: dark;
     }
   }
   :root[data-theme="dark"] {
-    --bg: #0E1729;
+    --bg: #111628;
     --surface: #16233B;
     --ink: #E5ECF5;
     --muted: #A0B0C4;
     --grid: #1C2C46;
+      --wash: none;
     --line: #2C3F5E;
     --teal: #4FD1C9;   --teal-soft: #123B44;
-    --violet: #A994FF; --violet-soft: #2A2552;
+    --violet: #B4A5E6; --violet-soft: #2B2850;
     --blue: #72A9FF;   --blue-soft: #1A2E54;
-    --rose: #FF7EA2;   --rose-soft: #45203A;
-    --amber: #F6BD55;  --amber-soft: #3D301A;
-    --focus: #A994FF;
+    --rose: #FF7FB8;   --rose-soft: #47213D;
+      --coral: #FF9A7A;  --coral-soft: #45281F;
+    --amber: #E6D28F;  --amber-soft: #34311F;
+    --focus: #B4A5E6;
     color-scheme: dark;
   }
 
@@ -81,8 +87,9 @@
     /* faint graph-paper grid */
     background-image:
       linear-gradient(var(--grid) 1px, transparent 1px),
-      linear-gradient(90deg, var(--grid) 1px, transparent 1px);
-    background-size: 32px 32px;
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px),
+      var(--wash, none);
+    background-size: 32px 32px, 32px 32px, 100% 100%;
     background-attachment: fixed;
     color: var(--ink);
     font-family: "Public Sans", system-ui, sans-serif;
@@ -225,7 +232,7 @@
   .gridline { stroke: var(--grid); stroke-width: 1; }
   .series {
     fill: none;
-    stroke: var(--teal);
+    stroke: url(#lineFill);
     stroke-width: 4;
     stroke-linecap: round;
     stroke-linejoin: round;
@@ -235,7 +242,7 @@
   }
   .forecast {
     fill: none;
-    stroke: var(--amber);
+    stroke: var(--violet);
     stroke-width: 4;
     stroke-linecap: round;
     stroke-dasharray: 2 10;
@@ -243,7 +250,7 @@
     animation: show 0.5s ease-out 1.7s forwards;
   }
   .pt { fill: var(--surface); stroke: var(--teal); stroke-width: 4; }
-  .pt-next { fill: var(--surface); stroke: var(--amber); stroke-width: 4; opacity: 0; animation: show 0.5s ease-out 1.9s forwards; }
+  .pt-next { fill: var(--surface); stroke: var(--violet); stroke-width: 4; opacity: 0; animation: show 0.5s ease-out 1.9s forwards; }
   @keyframes draw { to { stroke-dashoffset: 0; } }
   @keyframes show { to { opacity: 1; } }
 
@@ -258,7 +265,7 @@
   }
   .milestones li { display: flex; gap: 8px; align-items: baseline; }
   .milestones b { font-weight: 600; min-width: 2.6em; font-variant-numeric: tabular-nums; }
-  .milestones .next b { color: var(--amber); }
+  .milestones .next b { color: var(--violet); }
 
   /* ---------- Sections ---------- */
   section.block {
@@ -331,7 +338,7 @@
   .project.ongoing { --c: var(--amber); --c-soft: var(--amber-soft); }
   .project.c-blue  { --c: var(--blue);  --c-soft: var(--blue-soft); }
   .project.c-rose  { --c: var(--rose);  --c-soft: var(--rose-soft); }
-  .project-head {
+    .project-head {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
@@ -368,18 +375,24 @@
   .links { display: flex; flex-wrap: wrap; gap: 8px 22px; }
 
   /* certifications */
-  .certs { display: grid; gap: 14px; }
+  .certs { display: grid; gap: 18px; }
   .cert {
+    --cc: var(--teal);
+    --cc-soft: var(--teal-soft);
     display: grid;
     grid-template-columns: 1fr auto;
     gap: 4px 16px;
     align-items: start;
-    padding: 18px 0;
-    border-bottom: 1px dashed var(--line);
+    padding: 22px 24px;
+    background: linear-gradient(180deg, color-mix(in srgb, var(--cc-soft) 45%, var(--surface)), var(--surface) 55%);
+    border: 1px solid var(--line);
+    border-left: 6px solid var(--cc);
+    border-radius: 6px 12px 12px 6px;
   }
-  .cert:first-child { padding-top: 0; }
+  .cert.c-violet { --cc: var(--violet); --cc-soft: var(--violet-soft); }
   .cert h3 { font-size: 20px; font-weight: 700; }
   .cert p { margin: 0; color: var(--muted); grid-column: 1 / -1; max-width: 40em; }
+  .cert .courses li { background: color-mix(in srgb, var(--cc-soft) 40%, var(--surface)); }
 
   /* skills */
   .skills {
@@ -429,24 +442,63 @@
   .brand svg { width: 22px; height: 22px; }
 
   /* stacked bar under the name, like a small chart */
-  .stack {
-    display: flex;
-    height: 10px;
+  .stack-track {
     max-width: 360px;
     margin-top: 18px;
+    height: 10px;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--line) 50%, transparent);
+    overflow: hidden;
+  }
+  .stack {
+    display: flex;
+    height: 100%;
+    width: 100%;
     border-radius: 999px;
     overflow: hidden;
   }
+
+  #name { position: relative; cursor: pointer; display: inline-block; }
+  #name .ch {
+    display: inline-block;
+    transform-origin: bottom;
+    transform: scaleY(0);
+    opacity: 0;
+  }
+  #name.run .ch { animation: rise 0.45s cubic-bezier(.2,.8,.3,1.2) forwards; }
+  @keyframes rise {
+    0% { transform: scaleY(0); opacity: 0; }
+    60% { opacity: 1; }
+    100% { transform: scaleY(1); opacity: 1; }
+  }
+  #name::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 3px;
+    border-radius: 2px;
+    background: var(--teal);
+    box-shadow: 0 0 14px 2px color-mix(in srgb, var(--teal) 60%, transparent);
+    opacity: 0;
+    pointer-events: none;
+  }
+  #name.run::after { animation: scan 1.1s ease-in-out 0.25s; }
+  @keyframes scan {
+    0% { left: -20%; opacity: 1; }
+    100% { left: 100%; opacity: 1; }
+  }
   .stack span { display: block; height: 100%; }
   .stack span:nth-child(1) { flex: 4; background: var(--teal); }
-  .stack span:nth-child(2) { flex: 3; background: var(--violet); }
-  .stack span:nth-child(3) { flex: 2; background: var(--blue); }
-  .stack span:nth-child(4) { flex: 1.5; background: var(--rose); }
-  .stack span:nth-child(5) { flex: 1; background: var(--amber); }
+  .stack span:nth-child(2) { flex: 4; background: var(--violet); }
+  .stack span:nth-child(3) { flex: 1.5; background: var(--blue); }
+  .stack span:nth-child(4) { flex: 1; background: var(--rose); }
+  .stack span:nth-child(5) { display: none; }
 
   .btn-main { background: var(--violet); border-color: var(--violet); color: #fff; }
   .btn-main:hover { filter: brightness(1.08); }
-  .btn-ghost { color: var(--violet); border-color: var(--violet); }
+  .btn-ghost { color: var(--teal); border-color: var(--teal); background: var(--teal-soft); }
   :root[data-theme="dark"] .btn-main { color: #14112B; }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) .btn-main { color: #14112B; }
@@ -455,24 +507,23 @@
   .chart { border-top: 4px solid var(--teal); }
   .area { opacity: 0; animation: show 0.8s ease-out 1.2s forwards; }
   .milestones li:nth-child(1) b { color: var(--teal); }
-  .milestones li:nth-child(2) b { color: var(--violet); }
-  .milestones li:nth-child(3) b { color: var(--blue); }
+  .milestones li:nth-child(2) b { color: color-mix(in srgb, var(--teal) 45%, var(--violet)); }
+  .milestones li:nth-child(3) b { color: var(--violet); }
+
+  /* section titles: purple to teal */
+  .block > h2 > span {
+    background: linear-gradient(90deg, var(--violet), var(--teal));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
 
   /* coloured legend swatch before each section title */
-  .block > h2::before {
-    content: "";
-    display: block;
-    width: 28px;
-    height: 6px;
-    border-radius: 999px;
-    margin-bottom: 12px;
-    background: var(--s, var(--teal));
-  }
   #about    { --s: var(--teal); }
   #projects { --s: var(--violet); }
-  #learning { --s: var(--blue); }
-  #skills   { --s: var(--rose); }
-  #contact  { --s: var(--amber); }
+  #learning { --s: var(--teal); }
+  #skills   { --s: var(--violet); }
+  #contact  { --s: var(--teal); }
 
   .fact { border-top: 4px solid var(--f); background: var(--f-soft); border-color: transparent; border-top-color: var(--f); }
   .fact:nth-child(1) { --f: var(--teal);   --f-soft: var(--teal-soft); }
@@ -560,17 +611,18 @@
     font-weight: 500;
     padding: 4px 12px;
     border-radius: 999px;
-    color: var(--k);
+    color: var(--ink);
     background: var(--k-soft);
+    border: 1px solid color-mix(in srgb, var(--k) 35%, transparent);
   }
+  /* one colour per skill group */
   .skill-row:nth-child(1) { --k: var(--teal);   --k-soft: var(--teal-soft); }
   .skill-row:nth-child(2) { --k: var(--violet); --k-soft: var(--violet-soft); }
   .skill-row:nth-child(3) { --k: var(--blue);   --k-soft: var(--blue-soft); }
   .skill-row:nth-child(4) { --k: var(--rose);   --k-soft: var(--rose-soft); }
   .skill-row:nth-child(5) { --k: var(--amber);  --k-soft: var(--amber-soft); }
-
   /* project buttons */
-  .links { gap: 10px 12px; margin-top: 4px; }
+  .links { display: flex; flex-wrap: wrap; gap: 10px 12px; margin-top: 4px; }
   .pbtn {
     display: inline-flex;
     align-items: center;
@@ -592,46 +644,10 @@
     :root:not([data-theme="light"]) .pbtn.solid { color: #0E1729; }
   }
 
-  /* dashboard thumbnails */
-  .thumb {
-    position: relative;
-    display: block;
-    margin: 6px 0 16px;
-    border-radius: 10px;
-    overflow: hidden;
-    border: 1px solid var(--line);
-    aspect-ratio: 16 / 8;
-    background: var(--c-soft);
-  }
-  .thumb img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: top center;
-    display: block;
-    transition: transform 0.3s ease;
-  }
-  .thumb-hint {
-    position: absolute;
-    left: 12px;
-    bottom: 12px;
-    padding: 6px 12px;
-    border-radius: 999px;
-    font-size: 13px;
-    font-weight: 600;
-    color: #fff;
-    background: color-mix(in srgb, var(--c) 92%, black);
-    opacity: 0;
-    transition: opacity 0.2s ease;
-  }
-  .thumb:hover img { transform: scale(1.03); }
-  .thumb:hover .thumb-hint, .thumb:focus-visible .thumb-hint { opacity: 1; }
-
   @media (min-width: 861px) {
     .wrap { padding: 0 40px; }
     .hero { padding: 88px 0 56px; gap: 72px; }
   }
-  @media (hover: none) { .thumb-hint { opacity: 1; } }
 
   /* course lists under each certificate */
   .meter {
@@ -694,6 +710,25 @@
     color: var(--amber);
   }
 
+  /* light mode: a little more teal and purple */
+  :root:not([data-theme="dark"]) header { border-bottom: 2px solid transparent; border-image: linear-gradient(90deg, var(--teal), var(--violet)) 1; }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) header { border-image: none; border-bottom: 1px solid var(--line); }
+  }
+  .project { background: linear-gradient(180deg, color-mix(in srgb, var(--c-soft) 45%, var(--surface)), var(--surface) 55%); }
+  .chart { box-shadow: 0 10px 30px -18px var(--violet); }
+
+  /* light mode: dark, clear text in the top area */
+  :root:not([data-theme="dark"]) .hero .lead,
+  :root:not([data-theme="dark"]) .chart-sub,
+  :root:not([data-theme="dark"]) .axis-text { color: var(--ink); fill: var(--ink); }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .hero .lead,
+    :root:not([data-theme="light"]) .chart-sub { color: var(--muted); }
+    :root:not([data-theme="light"]) .axis-text { fill: var(--muted); }
+  }
+
+
   /* ---------- Small screens ---------- */
   @media (max-width: 860px) {
     .hero { grid-template-columns: 1fr; gap: 32px; padding-top: 40px; }
@@ -718,7 +753,9 @@
     .series { animation: none; stroke-dashoffset: 0; }
     .forecast, .pt-next, .area { animation: none; opacity: 1; }
     .pulse { animation: none; }
-    .pbtn, .thumb img { transition: none; }
+    .pbtn { transition: none; }
+    #name .ch { transform: none; opacity: 1; animation: none !important; }
+    #name::after { display: none; }
   }
 </style>
 </head>
@@ -760,8 +797,8 @@
     <!-- ===== HERO ===== -->
     <div class="hero">
       <div>
-        <h1>Amirah Najihah</h1>
-        <div class="stack" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
+        <h1 id="name" title="Click to replay">Amirah Najihah</h1>
+        <div class="stack-track" aria-hidden="true"><div class="stack" id="stack"><span></span><span></span><span></span><span></span><span></span></div></div>
         <p class="lead">Final-year Computer Science student at Universiti Teknologi MARA (UiTM), specialising in Big Data. Building towards a career in data science and analytics.</p>
         <div class="actions">
           <a class="btn btn-main" href="#projects">See my projects</a>
@@ -782,17 +819,22 @@
           <text class="axis-text" x="420" y="216" text-anchor="middle">2026</text>
           <text class="axis-text" x="545" y="216" text-anchor="middle">2027</text>
           <defs>
-            <linearGradient id="areaFill" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0" style="stop-color: var(--teal); stop-opacity: 0.35"/>
-              <stop offset="1" style="stop-color: var(--violet); stop-opacity: 0.02"/>
+            <linearGradient id="areaFill" x1="60" y1="0" x2="420" y2="0" gradientUnits="userSpaceOnUse">
+              <stop offset="0" style="stop-color: var(--teal); stop-opacity: 0.22"/>
+              <stop offset="1" style="stop-color: var(--violet); stop-opacity: 0.28"/>
+            </linearGradient>
+            <linearGradient id="lineFill" x1="60" y1="0" x2="545" y2="0" gradientUnits="userSpaceOnUse">
+              <stop offset="0" style="stop-color: var(--teal)"/>
+              <stop offset="0.75" style="stop-color: var(--violet)"/>
+              <stop offset="1" style="stop-color: var(--violet)"/>
             </linearGradient>
           </defs>
           <path class="area" fill="url(#areaFill)" d="M60 170 C 140 160, 220 120, 300 110 S 390 82, 420 74 L 420 190 L 60 190 Z"/>
           <path class="series" d="M60 170 C 140 160, 220 120, 300 110 S 390 82, 420 74"/>
           <path class="forecast" d="M420 74 L 545 38"/>
           <circle class="pt" cx="60" cy="170" r="7"/>
-          <circle class="pt" cx="300" cy="110" r="7"/>
-          <circle class="pt" cx="420" cy="74" r="7"/>
+          <circle class="pt" cx="300" cy="110" r="7" style="stroke: color-mix(in srgb, var(--teal) 45%, var(--violet))"/>
+          <circle class="pt" cx="420" cy="74" r="7" style="stroke: var(--violet)"/>
           <circle class="pt-next" cx="545" cy="38" r="7"/>
         </svg>
         <ol class="milestones">
@@ -806,7 +848,7 @@
 
     <!-- ===== ABOUT ===== -->
     <section class="block" id="about" aria-labelledby="aboutTitle">
-      <h2 id="aboutTitle">About me</h2>
+      <h2 id="aboutTitle"><span>About me</span></h2>
       <div class="prose">
         <p>I am a final-year Bachelor of Computer Science student at Universiti Teknologi MARA (UiTM), specialising in Big Data. I previously graduated with a Diploma in Computer Science, where I received the Vice-Chancellor's Award for making the Dean's List in every semester.</p>
         <p>I have always been drawn to the "why" behind things. When I see a number or a trend, I want to understand why it looks that way and what is driving it. Data analytics gives me a structured way to follow that interest, turning raw data into evidence that explains patterns and supports better decisions. Beyond finding the cause, I also enjoy working out what can be done about it, and I am building the knowledge and experience to propose solutions that are grounded in data.</p>
@@ -823,7 +865,7 @@
 
     <!-- ===== PROJECTS ===== -->
     <section class="block" id="projects" aria-labelledby="projectsTitle">
-      <h2 id="projectsTitle">Projects</h2>
+      <h2 id="projectsTitle"><span>Projects</span></h2>
       <div class="projects">
 
         <article class="project ongoing featured">
@@ -844,11 +886,6 @@
             <h3>How Oil Prices Affect the Malaysian Ringgit (2005–2026)</h3>
             <span class="key done">Live</span>
           </div>
-          <!-- Screenshot: save it as images/ringgit-dashboard.png -->
-          <a class="thumb" href="https://ringgit-oil-analysis.streamlit.app" target="_blank" rel="noopener">
-            <img src="images/ringgit-dashboard.png" alt="Screenshot of the oil price and ringgit dashboard" loading="lazy" onerror="this.parentElement.remove()">
-            <span class="thumb-hint">Open the live dashboard</span>
-          </a>
           <p>Analysed 20 years of crude oil prices and USD/MYR exchange rate data to measure how changes in oil prices affect the value of the Malaysian ringgit, using correlation and regression analysis in Python.</p>
           <p>Built and deployed an interactive Streamlit dashboard that walks through the analysis step by step, from data preparation to the final results. The dashboard updates automatically with the latest market data on weekdays. Markets are closed on weekends, so no new values are added then.</p>
           <ul class="tags" aria-label="Tools">
@@ -865,11 +902,6 @@
             <h3>Malaysian Blood Donation Trend Dashboard</h3>
             <span class="key done">Complete</span>
           </div>
-          <!-- Screenshot: save it as images/blood-donation-dashboard.png -->
-          <a class="thumb" href="https://github.com/aamrhh/malaysia-blood-donation-analysis" target="_blank" rel="noopener">
-            <img src="images/blood-donation-dashboard.png" alt="Screenshot of the Malaysian blood donation Power BI dashboard" loading="lazy" onerror="this.parentElement.remove()">
-            <span class="thumb-hint">View the project</span>
-          </a>
           <p>An interactive Power BI dashboard that shows blood donation trends in Malaysia, so it is easy to compare donations over time and spot changes.</p>
           <ul class="tags" aria-label="Tools">
             <li>Power BI</li><li>Python (pandas)</li><li>Data cleaning</li><li>Data visualisation</li>
@@ -884,7 +916,7 @@
 
     <!-- ===== CERTIFICATIONS ===== -->
     <section class="block" id="learning" aria-labelledby="learningTitle">
-      <h2 id="learningTitle">Certifications and learning</h2>
+      <h2 id="learningTitle"><span>Certifications and learning</span></h2>
       <div class="certs">
         <div class="cert">
           <h3>Google Data Analytics Professional Certificate</h3>
@@ -906,7 +938,7 @@
             <li>Accelerate Your Job Search with AI</li>
           </ol>
         </div>
-        <div class="cert">
+        <div class="cert c-violet">
           <h3>DataCamp Associate Data Scientist in Python</h3>
           <span class="key progress">Learning now</span>
           <p>A learning track that covers Python, data manipulation, statistics and machine learning.</p>
@@ -919,7 +951,7 @@
 
     <!-- ===== SKILLS ===== -->
     <section class="block" id="skills" aria-labelledby="skillsTitle">
-      <h2 id="skillsTitle">Skills and tools</h2>
+      <h2 id="skillsTitle"><span>Skills and tools</span></h2>
       <dl class="skill-rows">
         <div class="skill-row">
           <dt>Programming</dt>
@@ -946,7 +978,7 @@
 
     <!-- ===== CONTACT ===== -->
     <section class="block" id="contact" aria-labelledby="contactTitle">
-      <h2 id="contactTitle">Contact</h2>
+      <h2 id="contactTitle"><span>Contact</span></h2>
       <div class="prose">
         <p>The best way to reach me is a message on LinkedIn. You can also see my work on GitHub.</p>
         <div class="contact-links">
@@ -993,6 +1025,52 @@
     });
     updateLabel();
     document.getElementById("year").textContent = new Date().getFullYear();
+
+    // "Computing" intro for the name. Click the name to play it again.
+    var nameEl = document.getElementById("name");
+    var stack = document.getElementById("stack");
+    var still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    var full = nameEl.textContent;
+    nameEl.setAttribute("aria-label", full);
+    nameEl.innerHTML = "";
+    full.split(" ").forEach(function (word, w) {
+      var wrap = document.createElement("span");
+      wrap.style.whiteSpace = "nowrap";
+      wrap.setAttribute("aria-hidden", "true");
+      word.split("").forEach(function (c) {
+        var ch = document.createElement("span");
+        ch.className = "ch";
+        ch.textContent = c;
+        wrap.appendChild(ch);
+      });
+      nameEl.appendChild(wrap);
+      if (w === 0) nameEl.appendChild(document.createTextNode(" "));
+    });
+    var letters = nameEl.querySelectorAll(".ch");
+
+    function finish() {
+      stack.style.width = "100%";
+    }
+
+    function play() {
+      if (still) { finish(); return; }
+      nameEl.classList.remove("run");
+      void nameEl.offsetWidth;
+      letters.forEach(function (ch, i) { ch.style.animationDelay = (0.35 + i * 0.06) + "s"; });
+      nameEl.classList.add("run");
+      var start = null, dur = 1400;
+      function step(t) {
+        if (!start) start = t;
+        var k = Math.min((t - start) / dur, 1);
+        var eased = 1 - Math.pow(1 - k, 3);
+        stack.style.width = (eased * 100).toFixed(1) + "%";
+        if (k < 1) requestAnimationFrame(step); else finish();
+      }
+      requestAnimationFrame(step);
+    }
+    nameEl.addEventListener("click", play);
+    play();
   })();
 </script>
 </body>
