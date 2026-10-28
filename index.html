@@ -1,0 +1,922 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Amirah Najihah | Data Portfolio</title>
+<meta name="description" content="Portfolio of Amirah Najihah, final-year Computer Science (Big Data) student at Universiti Teknologi MARA (UiTM), looking for data analytics and data science internships.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Public+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<script>
+  // Pick the saved theme before the page draws, so it does not flash
+  (function () {
+    try {
+      var saved = localStorage.getItem("theme");
+      if (saved === "light" || saved === "dark") {
+        document.documentElement.setAttribute("data-theme", saved);
+      }
+    } catch (e) {}
+  })();
+</script>
+<style>
+  /* ---------- Colours (light mode) ---------- */
+  :root {
+    --bg: #EDF3F9;
+    --surface: #FFFFFF;
+    --ink: #15233A;
+    --muted: #4F6178;
+    --grid: #D5E2EE;
+    --line: #C4D2E0;
+    /* chart series colours */
+    --teal: #0B7A84;   --teal-soft: #D6F0F0;
+    --violet: #6A4FD6; --violet-soft: #ECE7FD;
+    --blue: #2463C9;   --blue-soft: #E0EAFB;
+    --rose: #C2365F;   --rose-soft: #FBE2EA;
+    --amber: #B0700A;  --amber-soft: #FCEED3;
+    --focus: #6A4FD6;
+    color-scheme: light;
+  }
+
+  /* ---------- Colours (dark mode) ---------- */
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0E1729;
+      --surface: #16233B;
+      --ink: #E5ECF5;
+      --muted: #A0B0C4;
+      --grid: #1C2C46;
+      --line: #2C3F5E;
+      --teal: #4FD1C9;   --teal-soft: #123B44;
+      --violet: #A994FF; --violet-soft: #2A2552;
+      --blue: #72A9FF;   --blue-soft: #1A2E54;
+      --rose: #FF7EA2;   --rose-soft: #45203A;
+      --amber: #F6BD55;  --amber-soft: #3D301A;
+      --focus: #A994FF;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0E1729;
+    --surface: #16233B;
+    --ink: #E5ECF5;
+    --muted: #A0B0C4;
+    --grid: #1C2C46;
+    --line: #2C3F5E;
+    --teal: #4FD1C9;   --teal-soft: #123B44;
+    --violet: #A994FF; --violet-soft: #2A2552;
+    --blue: #72A9FF;   --blue-soft: #1A2E54;
+    --rose: #FF7EA2;   --rose-soft: #45203A;
+    --amber: #F6BD55;  --amber-soft: #3D301A;
+    --focus: #A994FF;
+    color-scheme: dark;
+  }
+
+  /* ---------- Base ---------- */
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background-color: var(--bg);
+    /* faint graph-paper grid */
+    background-image:
+      linear-gradient(var(--grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size: 32px 32px;
+    background-attachment: fixed;
+    color: var(--ink);
+    font-family: "Public Sans", system-ui, sans-serif;
+    font-size: 17px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3 {
+    font-family: "Bricolage Grotesque", "Public Sans", sans-serif;
+    line-height: 1.15;
+    margin: 0;
+  }
+  a { color: var(--teal); }
+  a:focus-visible, button:focus-visible {
+    outline: 3px solid var(--focus);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+  .wrap {
+    max-width: 1040px;
+    margin: 0 auto;
+    padding: 0 16px;
+  }
+  .skip {
+    position: absolute;
+    left: -999px;
+  }
+  .skip:focus {
+    left: 16px;
+    top: 16px;
+    background: var(--surface);
+    padding: 8px 12px;
+    z-index: 10;
+  }
+
+  /* ---------- Header ---------- */
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    background: color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid var(--line);
+  }
+  .bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    min-height: 60px;
+  }
+  .brand {
+    font-family: "Bricolage Grotesque", sans-serif;
+    font-weight: 700;
+    font-size: 18px;
+    color: var(--ink);
+    text-decoration: none;
+  }
+  nav ul {
+    display: flex;
+    gap: 22px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  nav a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 500;
+  }
+  nav a:hover { color: var(--ink); }
+  .theme-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--ink);
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 6px 12px;
+    cursor: pointer;
+  }
+  .theme-btn svg { width: 16px; height: 16px; }
+
+  /* ---------- Hero ---------- */
+  .hero {
+    padding: 64px 0 40px;
+    display: grid;
+    grid-template-columns: 1fr 1.1fr;
+    gap: 48px;
+    align-items: center;
+  }
+  .hero h1 {
+    font-size: clamp(44px, 7vw, 76px);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+  .hero .lead {
+    font-size: 19px;
+    color: var(--muted);
+    max-width: 34em;
+    margin: 18px 0 28px;
+  }
+  .actions { display: flex; flex-wrap: wrap; gap: 12px; }
+  .btn {
+    display: inline-block;
+    padding: 11px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 15px;
+    text-decoration: none;
+    border: 1px solid var(--teal);
+  }
+  .btn-main { background: var(--teal); color: var(--bg); }
+  .btn-ghost { color: var(--teal); background: transparent; }
+
+  /* journey chart */
+  .chart {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 20px 20px 8px;
+  }
+  .chart-title {
+    font-size: 15px;
+    font-weight: 600;
+    margin: 0 0 4px;
+  }
+  .chart-sub {
+    font-size: 14px;
+    color: var(--muted);
+    margin: 0 0 8px;
+  }
+  .chart svg { width: 100%; height: auto; display: block; }
+  .axis-text { fill: var(--muted); font-family: "Public Sans", sans-serif; font-size: 15px; }
+  .gridline { stroke: var(--grid); stroke-width: 1; }
+  .series {
+    fill: none;
+    stroke: var(--teal);
+    stroke-width: 4;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-dasharray: 600;
+    stroke-dashoffset: 600;
+    animation: draw 1.6s ease-out 0.2s forwards;
+  }
+  .forecast {
+    fill: none;
+    stroke: var(--amber);
+    stroke-width: 4;
+    stroke-linecap: round;
+    stroke-dasharray: 2 10;
+    opacity: 0;
+    animation: show 0.5s ease-out 1.7s forwards;
+  }
+  .pt { fill: var(--surface); stroke: var(--teal); stroke-width: 4; }
+  .pt-next { fill: var(--surface); stroke: var(--amber); stroke-width: 4; opacity: 0; animation: show 0.5s ease-out 1.9s forwards; }
+  @keyframes draw { to { stroke-dashoffset: 0; } }
+  @keyframes show { to { opacity: 1; } }
+
+  .milestones {
+    list-style: none;
+    margin: 6px 0 12px;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 6px;
+    font-size: 14px;
+  }
+  .milestones li { display: flex; gap: 8px; align-items: baseline; }
+  .milestones b { font-weight: 600; min-width: 2.6em; font-variant-numeric: tabular-nums; }
+  .milestones .next b { color: var(--amber); }
+
+  /* ---------- Sections ---------- */
+  section.block {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 40px;
+    padding: 56px 0;
+    border-top: 1px solid var(--line);
+  }
+  .block > h2 {
+    font-size: 28px;
+    font-weight: 700;
+    position: sticky;
+    top: 84px;
+    align-self: start;
+  }
+  .prose p { margin: 0 0 16px; max-width: 38em; }
+  .facts {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin: 24px 0 0;
+  }
+  .fact {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 14px 16px;
+  }
+  .fact dt { font-size: 13px; color: var(--muted); }
+  .fact dd {
+    margin: 2px 0 0;
+    font-family: "Bricolage Grotesque", sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+  }
+
+  /* legend: used for project and course status */
+  .key {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 999px;
+  }
+  .key::before {
+    content: "";
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+  }
+  .key.done { background: var(--teal-soft); color: var(--teal); }
+  .key.done::before { background: var(--teal); }
+  .key.progress { background: var(--amber-soft); color: var(--amber); }
+  .key.progress::before { border: 2px solid var(--amber); width: 5px; height: 5px; }
+
+  /* projects */
+  .projects { display: grid; gap: 18px; }
+  .project {
+    --c: var(--teal);
+    --c-soft: var(--teal-soft);
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-left: 6px solid var(--c);
+    border-radius: 6px 12px 12px 6px;
+    padding: 22px 24px;
+  }
+  .project.ongoing { --c: var(--amber); --c-soft: var(--amber-soft); }
+  .project.c-blue  { --c: var(--blue);  --c-soft: var(--blue-soft); }
+  .project.c-rose  { --c: var(--rose);  --c-soft: var(--rose-soft); }
+  .project-head {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+  .project h3 { font-size: 22px; font-weight: 700; }
+  .project p { margin: 0 0 12px; color: var(--ink); }
+  .project .note { color: var(--muted); font-size: 15px; }
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    list-style: none;
+    margin: 0 0 14px;
+    padding: 0;
+  }
+  .tags li {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--c, var(--muted));
+    background: var(--c-soft, transparent);
+    border-radius: 6px;
+    padding: 2px 9px;
+  }
+  .project a.link {
+    color: var(--c);
+    font-weight: 600;
+    font-size: 15px;
+    text-underline-offset: 3px;
+  }
+  .featured h3 { font-size: 26px; }
+  .links { display: flex; flex-wrap: wrap; gap: 8px 22px; }
+
+  /* certifications */
+  .certs { display: grid; gap: 14px; }
+  .cert {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 4px 16px;
+    align-items: start;
+    padding: 18px 0;
+    border-bottom: 1px dashed var(--line);
+  }
+  .cert:first-child { padding-top: 0; }
+  .cert h3 { font-size: 20px; font-weight: 700; }
+  .cert p { margin: 0; color: var(--muted); grid-column: 1 / -1; max-width: 40em; }
+
+  /* skills */
+  .skills {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 26px 32px;
+  }
+  .skills h3 {
+    font-size: 17px;
+    font-weight: 700;
+    padding-bottom: 6px;
+    margin-bottom: 10px;
+    border-bottom: 2px solid var(--teal);
+    display: inline-block;
+  }
+  .skills ul { list-style: none; margin: 0; padding: 0; }
+  .skills li { padding: 3px 0; }
+
+  /* contact */
+  .contact-links { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 8px; }
+  .contact-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    min-width: 240px;
+    padding: 16px 20px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    text-decoration: none;
+    color: var(--ink);
+  }
+  .contact-card:hover { border-color: var(--teal); }
+  .contact-card svg { width: 26px; height: 26px; fill: var(--teal); flex: none; }
+  .contact-card strong { display: block; font-size: 16px; }
+  .contact-card span { font-size: 14px; color: var(--muted); }
+
+  footer {
+    border-top: 1px solid var(--line);
+    padding: 24px 0 40px;
+    font-size: 14px;
+    color: var(--muted);
+  }
+
+  /* ---------- Extra colour ---------- */
+  .brand { display: inline-flex; align-items: center; gap: 10px; }
+  .brand svg { width: 22px; height: 22px; }
+
+  /* stacked bar under the name, like a small chart */
+  .stack {
+    display: flex;
+    height: 10px;
+    max-width: 360px;
+    margin-top: 18px;
+    border-radius: 999px;
+    overflow: hidden;
+  }
+  .stack span { display: block; height: 100%; }
+  .stack span:nth-child(1) { flex: 4; background: var(--teal); }
+  .stack span:nth-child(2) { flex: 3; background: var(--violet); }
+  .stack span:nth-child(3) { flex: 2; background: var(--blue); }
+  .stack span:nth-child(4) { flex: 1.5; background: var(--rose); }
+  .stack span:nth-child(5) { flex: 1; background: var(--amber); }
+
+  .btn-main { background: var(--violet); border-color: var(--violet); color: #fff; }
+  .btn-main:hover { filter: brightness(1.08); }
+  .btn-ghost { color: var(--violet); border-color: var(--violet); }
+  :root[data-theme="dark"] .btn-main { color: #14112B; }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .btn-main { color: #14112B; }
+  }
+
+  .chart { border-top: 4px solid var(--teal); }
+  .area { opacity: 0; animation: show 0.8s ease-out 1.2s forwards; }
+  .milestones li:nth-child(1) b { color: var(--teal); }
+  .milestones li:nth-child(2) b { color: var(--violet); }
+  .milestones li:nth-child(3) b { color: var(--blue); }
+
+  /* coloured legend swatch before each section title */
+  .block > h2::before {
+    content: "";
+    display: block;
+    width: 28px;
+    height: 6px;
+    border-radius: 999px;
+    margin-bottom: 12px;
+    background: var(--s, var(--teal));
+  }
+  #about    { --s: var(--teal); }
+  #projects { --s: var(--violet); }
+  #learning { --s: var(--blue); }
+  #skills   { --s: var(--rose); }
+  #contact  { --s: var(--amber); }
+
+  .fact { border-top: 4px solid var(--f); background: var(--f-soft); border-color: transparent; border-top-color: var(--f); }
+  .fact:nth-child(1) { --f: var(--teal);   --f-soft: var(--teal-soft); }
+  .fact:nth-child(2) { --f: var(--violet); --f-soft: var(--violet-soft); }
+  .fact:nth-child(3) { --f: var(--blue);   --f-soft: var(--blue-soft); }
+  .fact dd { color: var(--f); }
+
+  .skills > div:nth-child(1) h3 { border-color: var(--teal); }
+  .skills > div:nth-child(2) h3 { border-color: var(--violet); }
+  .skills > div:nth-child(3) h3 { border-color: var(--blue); }
+  .skills > div:nth-child(4) h3 { border-color: var(--rose); }
+  .skills li::before {
+    content: "";
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    margin-right: 10px;
+    vertical-align: middle;
+    background: var(--line);
+  }
+
+  .contact-card.li svg { fill: var(--blue); }
+  .contact-card.li:hover { border-color: var(--blue); background: var(--blue-soft); }
+  .contact-card.gh svg { fill: var(--violet); }
+  .contact-card.gh:hover { border-color: var(--violet); background: var(--violet-soft); }
+
+  /* about: extra fact line and status */
+  .fact dd.small {
+    font-family: "Public Sans", sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+  .prose p.status {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    max-width: none;
+    margin: 14px 0 0;
+    padding: 14px 18px;
+    border-radius: 10px;
+    background: var(--amber-soft);
+    border-left: 5px solid var(--amber);
+    font-weight: 600;
+  }
+  .pulse {
+    flex: none;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--amber);
+    box-shadow: 0 0 0 0 var(--amber);
+    animation: pulse 2s ease-out infinite;
+  }
+  @keyframes pulse {
+    0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--amber) 60%, transparent); }
+    100% { box-shadow: 0 0 0 10px transparent; }
+  }
+
+  /* skills as rows, like a resume */
+  .skill-rows { margin: 0; }
+  .skill-row {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    gap: 16px;
+    align-items: center;
+    padding: 14px 0;
+    border-bottom: 1px dashed var(--line);
+  }
+  .skill-row:first-child { padding-top: 0; }
+  .skill-row dt { font-weight: 700; display: flex; align-items: center; gap: 10px; }
+  .skill-row dt::before {
+    content: "";
+    width: 10px;
+    height: 10px;
+    border-radius: 3px;
+    background: var(--k);
+  }
+  .skill-row dd { margin: 0; }
+  .skill-row ul { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; margin: 0; padding: 0; }
+  .skill-row li {
+    font-size: 15px;
+    font-weight: 500;
+    padding: 4px 12px;
+    border-radius: 999px;
+    color: var(--k);
+    background: var(--k-soft);
+  }
+  .skill-row:nth-child(1) { --k: var(--teal);   --k-soft: var(--teal-soft); }
+  .skill-row:nth-child(2) { --k: var(--violet); --k-soft: var(--violet-soft); }
+  .skill-row:nth-child(3) { --k: var(--blue);   --k-soft: var(--blue-soft); }
+  .skill-row:nth-child(4) { --k: var(--rose);   --k-soft: var(--rose-soft); }
+  .skill-row:nth-child(5) { --k: var(--amber);  --k-soft: var(--amber-soft); }
+
+  /* course lists under each certificate */
+  .meter {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 12px;
+  }
+  .meter-bar {
+    flex: 1;
+    max-width: 320px;
+    height: 8px;
+    border-radius: 999px;
+    background: var(--teal-soft);
+    overflow: hidden;
+  }
+  .meter-bar span { display: block; height: 100%; background: var(--teal); border-radius: 999px; }
+  .meter-text { font-size: 14px; font-weight: 600; color: var(--teal); }
+  .courses {
+    grid-column: 1 / -1;
+    counter-reset: c;
+    list-style: none;
+    margin: 14px 0 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px 20px;
+    font-size: 15px;
+  }
+  .courses li {
+    counter-increment: c;
+    display: flex;
+    gap: 10px;
+    align-items: baseline;
+    padding: 8px 12px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+  }
+  .courses li::before {
+    content: counter(c);
+    flex: none;
+    width: 22px;
+    height: 22px;
+    line-height: 22px;
+    text-align: center;
+    border-radius: 50%;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--surface);
+    background: var(--teal);
+  }
+  .courses.learning li::before { background: transparent; color: var(--amber); box-shadow: inset 0 0 0 2px var(--amber); }
+  .courses em {
+    margin-left: auto;
+    font-style: normal;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--amber);
+  }
+
+  /* ---------- Small screens ---------- */
+  @media (max-width: 860px) {
+    .hero { grid-template-columns: 1fr; gap: 32px; padding-top: 40px; }
+    section.block { grid-template-columns: 1fr; gap: 20px; padding: 44px 0; }
+    .block > h2 { position: static; }
+    nav { display: none; }
+  }
+  @media (max-width: 560px) {
+    body { font-size: 16px; }
+    .facts { grid-template-columns: 1fr; }
+    .skills { grid-template-columns: 1fr; }
+    .milestones { grid-template-columns: 1fr; }
+    .courses { grid-template-columns: 1fr; }
+    .skill-row { grid-template-columns: 1fr; gap: 8px; }
+    .project { padding: 18px; }
+    .contact-card { min-width: 0; width: 100%; }
+    .theme-btn .label { display: none; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .series { animation: none; stroke-dashoffset: 0; }
+    .forecast, .pt-next, .area { animation: none; opacity: 1; }
+    .pulse { animation: none; }
+  }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header>
+  <div class="wrap bar">
+    <a class="brand" href="#top">
+      <svg viewBox="0 0 22 22" aria-hidden="true">
+        <rect x="1" y="11" width="5" height="10" rx="1.5" fill="var(--teal)"/>
+        <rect x="8.5" y="5" width="5" height="16" rx="1.5" fill="var(--violet)"/>
+        <rect x="16" y="1" width="5" height="20" rx="1.5" fill="var(--rose)"/>
+      </svg>
+      Amirah Najihah
+    </a>
+    <nav aria-label="Sections">
+      <ul>
+        <li><a href="#about">About</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#learning">Learning</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="Switch colour theme">
+      <svg viewBox="0 0 16 16" aria-hidden="true">
+        <circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.5"/>
+        <path d="M8 1.5a6.5 6.5 0 0 1 0 13z" fill="currentColor"/>
+      </svg>
+      <span class="label" id="themeLabel">Dark mode</span>
+    </button>
+  </div>
+</header>
+
+<main id="main">
+  <div class="wrap" id="top">
+
+    <!-- ===== HERO ===== -->
+    <div class="hero">
+      <div>
+        <h1>Amirah Najihah</h1>
+        <div class="stack" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
+        <p class="lead">Final-year Computer Science student at Universiti Teknologi MARA (UiTM), specialising in Big Data. Building towards a career in data science and analytics.</p>
+        <div class="actions">
+          <a class="btn btn-main" href="#projects">See my projects</a>
+          <a class="btn btn-ghost" href="#contact">Get in touch</a>
+        </div>
+      </div>
+
+      <figure class="chart" aria-labelledby="chartTitle">
+        <p class="chart-title" id="chartTitle">My path so far</p>
+        <p class="chart-sub">Solid line is done. Dotted line is the next step.</p>
+        <svg viewBox="0 0 600 230" aria-hidden="true">
+          <line class="gridline" x1="40" y1="40"  x2="580" y2="40"/>
+          <line class="gridline" x1="40" y1="95"  x2="580" y2="95"/>
+          <line class="gridline" x1="40" y1="150" x2="580" y2="150"/>
+          <line x1="40" y1="190" x2="580" y2="190" stroke="var(--line)" stroke-width="2"/>
+          <text class="axis-text" x="60"  y="216" text-anchor="middle">2022</text>
+          <text class="axis-text" x="300" y="216" text-anchor="middle">2025</text>
+          <text class="axis-text" x="420" y="216" text-anchor="middle">2026</text>
+          <text class="axis-text" x="545" y="216" text-anchor="middle">2027</text>
+          <defs>
+            <linearGradient id="areaFill" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" style="stop-color: var(--teal); stop-opacity: 0.35"/>
+              <stop offset="1" style="stop-color: var(--violet); stop-opacity: 0.02"/>
+            </linearGradient>
+          </defs>
+          <path class="area" fill="url(#areaFill)" d="M60 170 C 140 160, 220 120, 300 110 S 390 82, 420 74 L 420 190 L 60 190 Z"/>
+          <path class="series" d="M60 170 C 140 160, 220 120, 300 110 S 390 82, 420 74"/>
+          <path class="forecast" d="M420 74 L 545 38"/>
+          <circle class="pt" cx="60" cy="170" r="7"/>
+          <circle class="pt" cx="300" cy="110" r="7"/>
+          <circle class="pt" cx="420" cy="74" r="7"/>
+          <circle class="pt-next" cx="545" cy="38" r="7"/>
+        </svg>
+        <ol class="milestones">
+          <li><b>2022</b> Began Diploma in Computer Science at UiTM</li>
+          <li><b>2025</b> Graduated with the Vice-Chancellor's Award and began my Bachelor's degree</li>
+          <li><b>2026</b> Final year, specialising in Big Data</li>
+          <li class="next"><b>2027</b> Industrial internship from March</li>
+        </ol>
+      </figure>
+    </div>
+
+    <!-- ===== ABOUT ===== -->
+    <section class="block" id="about" aria-labelledby="aboutTitle">
+      <h2 id="aboutTitle">About me</h2>
+      <div class="prose">
+        <p>I am a final-year Bachelor of Computer Science student at Universiti Teknologi MARA (UiTM), specialising in Big Data. I previously graduated with a Diploma in Computer Science, where I received the Vice-Chancellor's Award for making the Dean's List in every semester.</p>
+        <p>I have always been drawn to the "why" behind things. When I see a number or a trend, I want to understand why it looks that way and what is driving it. Data analytics gives me a structured way to follow that interest, turning raw data into evidence that explains patterns and supports better decisions. Beyond finding the cause, I also enjoy working out what can be done about it, and I am building the knowledge and experience to propose solutions that are grounded in data.</p>
+        <p>Through academic and personal projects, I have worked across the full analytics workflow, from collecting and cleaning data to modelling and presenting results. I have used Python, SQL and Power BI to analyse national blood donation trends, measure how oil prices affect the ringgit, and build machine learning models for text and classification tasks.</p>
+        <p>I am still early in my journey, but I learn quickly and genuinely enjoy picking up new tools and methods. Each project has taught me something practical, from being patient with messy data to explaining technical findings in a way people can act on. I am now eager to gain industry experience that will strengthen my skills in data science and analytics.</p>
+        <dl class="facts">
+          <div class="fact"><dt>CGPA</dt><dd>3.75</dd></div>
+          <div class="fact"><dt>Dean's List</dt><dd>Every semester</dd><dd class="small">Diploma and degree, to date</dd></div>
+          <div class="fact"><dt>Vice-Chancellor's Award</dt><dd>Diploma</dd><dd class="small">Awarded in 2025</dd></div>
+        </dl>
+        <p class="status"><span class="pulse" aria-hidden="true"></span>Actively seeking an internship in data science, data analytics or a related field, starting March 2027.</p>
+      </div>
+    </section>
+
+    <!-- ===== PROJECTS ===== -->
+    <section class="block" id="projects" aria-labelledby="projectsTitle">
+      <h2 id="projectsTitle">Projects</h2>
+      <div class="projects">
+
+        <article class="project ongoing featured">
+          <div class="project-head">
+            <h3>Final Year Project: Telco Sentiment Analysis</h3>
+            <span class="key progress">In progress</span>
+          </div>
+          <p>Developing an NLP-based aspect-based sentiment analysis (ABSA) system to evaluate the service quality of Malaysian telecommunication providers (Maxis, CelcomDigi and U Mobile), using user reviews from the Google Play Store and Apple App Store. The project aims to build a machine learning model that better understands mixed-language Malaysian text, where English and Malay often appear in the same review.</p>
+          <p>The system covers aspect category detection (ACD), which identifies what each review is about, such as service reliability, customer service or app performance, followed by sentiment classification for each aspect. I planned the full end-to-end pipeline, from collecting and preprocessing reviews to modelling, evaluation and a results dashboard.</p>
+          <ul class="tags" aria-label="Tools">
+            <li>Python</li><li>Web scraping</li><li>NLP</li><li>Aspect category detection</li><li>Machine learning</li>
+          </ul>
+          <p class="note">Code will be shared after the project is complete.</p>
+        </article>
+
+        <article class="project c-blue">
+          <div class="project-head">
+            <h3>How Oil Prices Affect the Malaysian Ringgit (2005–2026)</h3>
+            <span class="key done">Live</span>
+          </div>
+          <p>Analysed 20 years of crude oil prices and USD/MYR exchange rate data to measure how changes in oil prices affect the value of the Malaysian ringgit, using correlation and regression analysis in Python.</p>
+          <p>Built and deployed an interactive Streamlit dashboard that walks through the analysis step by step, from data preparation to the final results. The dashboard updates automatically with the latest market data on weekdays. Markets are closed on weekends, so no new values are added then.</p>
+          <ul class="tags" aria-label="Tools">
+            <li>Python</li><li>pandas</li><li>Correlation and regression</li><li>Streamlit</li>
+          </ul>
+          <div class="links">
+            <a class="link" href="https://ringgit-oil-analysis.streamlit.app" target="_blank" rel="noopener">Open the dashboard</a>
+            <a class="link" href="https://github.com/aamrhh/ringgit-oil-analysis" target="_blank" rel="noopener">View on GitHub</a>
+          </div>
+        </article>
+
+        <article class="project c-rose">
+          <div class="project-head">
+            <h3>Malaysian Blood Donation Trend Dashboard</h3>
+            <span class="key done">Complete</span>
+          </div>
+          <p>An interactive Power BI dashboard that shows blood donation trends in Malaysia, so it is easy to compare donations over time and spot changes.</p>
+          <ul class="tags" aria-label="Tools">
+            <li>Power BI</li><li>Python (pandas)</li><li>Data cleaning</li><li>Data visualisation</li>
+          </ul>
+          <a class="link" href="https://github.com/aamrhh/malaysia-blood-donation-analysis" target="_blank" rel="noopener">View on GitHub</a>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- ===== CERTIFICATIONS ===== -->
+    <section class="block" id="learning" aria-labelledby="learningTitle">
+      <h2 id="learningTitle">Certifications and learning</h2>
+      <div class="certs">
+        <div class="cert">
+          <h3>Google Data Analytics Professional Certificate</h3>
+          <span class="key done">Completed</span>
+          <p>Nine courses covering the full analysis process, from asking the right questions to sharing results.</p>
+          <div class="meter" role="img" aria-label="9 of 9 courses completed">
+            <div class="meter-bar"><span style="width: 100%"></span></div>
+            <span class="meter-text">9 of 9 courses</span>
+          </div>
+          <ol class="courses">
+            <li>Foundations: Data, Data, Everywhere</li>
+            <li>Ask Questions to Make Data-Driven Decisions</li>
+            <li>Prepare Data for Exploration</li>
+            <li>Process Data from Dirty to Clean</li>
+            <li>Analyze Data to Answer Questions</li>
+            <li>Share Data Through the Art of Visualization</li>
+            <li>Introduction to Data Analysis Using Python</li>
+            <li>Google Data Analytics Capstone: Complete a Case Study</li>
+            <li>Accelerate Your Job Search with AI</li>
+          </ol>
+        </div>
+        <div class="cert">
+          <h3>DataCamp Associate Data Scientist in Python</h3>
+          <span class="key progress">Learning now</span>
+          <p>A learning track that covers Python, data manipulation, statistics and machine learning.</p>
+          <ol class="courses learning">
+            <li class="now">Introduction to Python <em>In progress</em></li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== SKILLS ===== -->
+    <section class="block" id="skills" aria-labelledby="skillsTitle">
+      <h2 id="skillsTitle">Skills and tools</h2>
+      <dl class="skill-rows">
+        <div class="skill-row">
+          <dt>Programming</dt>
+          <dd><ul><li>Python</li><li>SQL</li><li>Java</li></ul></dd>
+        </div>
+        <div class="skill-row">
+          <dt>Data analysis</dt>
+          <dd><ul><li>Data cleaning and preparation</li><li>Data visualisation</li><li>Correlation and regression</li><li>Web scraping</li></ul></dd>
+        </div>
+        <div class="skill-row">
+          <dt>Machine learning</dt>
+          <dd><ul><li>Classification models</li><li>Natural language processing (NLP)</li><li>Sentiment analysis</li></ul></dd>
+        </div>
+        <div class="skill-row">
+          <dt>Databases</dt>
+          <dd><ul><li>Database design</li><li>MySQL</li><li>Oracle</li><li>MongoDB</li></ul></dd>
+        </div>
+        <div class="skill-row">
+          <dt>Tools</dt>
+          <dd><ul><li>Power BI</li><li>Microsoft Excel</li><li>Streamlit</li><li>Jupyter Notebook</li><li>Google Colab</li><li>VS Code</li><li>Git and GitHub</li></ul></dd>
+        </div>
+      </dl>
+    </section>
+
+    <!-- ===== CONTACT ===== -->
+    <section class="block" id="contact" aria-labelledby="contactTitle">
+      <h2 id="contactTitle">Contact</h2>
+      <div class="prose">
+        <p>The best way to reach me is a message on LinkedIn. You can also see my work on GitHub.</p>
+        <div class="contact-links">
+          <!-- CHANGE THIS: put your own LinkedIn link below -->
+          <a class="contact-card li" href="https://www.linkedin.com/in/YOUR-LINKEDIN-NAME" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.98 3.5A2.5 2.5 0 1 1 5 8.5a2.5 2.5 0 0 1-.02-5zM3 9.75h4V21H3zM9.5 9.75h3.8v1.6h.06c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.77 2.65 4.77 6.1V21h-4v-4.95c0-1.18-.02-2.7-1.65-2.7-1.65 0-1.9 1.29-1.9 2.62V21h-4z"/></svg>
+            <div><strong>LinkedIn</strong><span>Send me a message</span></div>
+          </a>
+          <a class="contact-card gh" href="https://github.com/aamrhh" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .5a11.5 11.5 0 0 0-3.64 22.41c.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.52-1.33-1.28-1.69-1.28-1.69-1.05-.71.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.77 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.84 1.19 3.1 0 4.42-2.7 5.4-5.26 5.68.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .5z"/></svg>
+            <div><strong>GitHub</strong><span>github.com/aamrhh</span></div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">Made by aamrhh. Hosted on GitHub Pages. &copy; <span id="year">2026</span></div>
+</footer>
+
+<script>
+  // Light and dark mode button
+  (function () {
+    var root = document.documentElement;
+    var btn = document.getElementById("themeBtn");
+    var label = document.getElementById("themeLabel");
+
+    function currentTheme() {
+      var set = root.getAttribute("data-theme");
+      if (set) return set;
+      return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+    }
+    function updateLabel() {
+      label.textContent = currentTheme() === "dark" ? "Light mode" : "Dark mode";
+    }
+    btn.addEventListener("click", function () {
+      var next = currentTheme() === "dark" ? "light" : "dark";
+      root.setAttribute("data-theme", next);
+      try { localStorage.setItem("theme", next); } catch (e) {}
+      updateLabel();
+    });
+    updateLabel();
+    document.getElementById("year").textContent = new Date().getFullYear();
+  })();
+</script>
+</body>
+</html>
