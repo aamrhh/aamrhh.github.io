@@ -148,20 +148,35 @@
     color: var(--ink);
     text-decoration: none;
   }
+  /* section tabs */
   nav ul {
     display: flex;
-    gap: 22px;
+    gap: 4px;
     list-style: none;
     margin: 0;
-    padding: 0;
+    padding: 4px;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--surface) 70%, transparent);
+    border: 1px solid var(--line);
   }
   nav a {
+    display: block;
+    padding: 6px 14px;
+    border-radius: 999px;
     color: var(--muted);
     text-decoration: none;
     font-size: 15px;
     font-weight: 500;
+    white-space: nowrap;
+    transition: background 0.2s ease, color 0.2s ease;
   }
-  nav a:hover { color: var(--ink); }
+  nav a:hover { color: var(--ink); background: var(--violet-soft); }
+  nav a.active { color: #fff; background: linear-gradient(90deg, var(--violet), var(--teal)); }
+  :root[data-theme="dark"] nav a.active { color: #111628; }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) nav a.active { color: #111628; }
+  }
+  section.block { scroll-margin-top: 80px; }
   .theme-btn {
     display: inline-flex;
     align-items: center;
@@ -734,7 +749,12 @@
     .hero { grid-template-columns: 1fr; gap: 32px; padding-top: 40px; }
     section.block { grid-template-columns: 1fr; gap: 20px; padding: 44px 0; }
     .block > h2 { position: static; }
-    nav { display: none; }
+    .bar { flex-wrap: wrap; row-gap: 8px; padding-top: 10px; padding-bottom: 10px; }
+    nav { order: 3; width: 100%; overflow-x: auto; scrollbar-width: none; }
+    nav::-webkit-scrollbar { display: none; }
+    nav ul { width: max-content; }
+    nav a { font-size: 14px; padding: 6px 12px; }
+    section.block { scroll-margin-top: 120px; }
   }
   @media (max-width: 560px) {
     body { font-size: 16px; }
@@ -776,7 +796,7 @@
       <ul>
         <li><a href="#about">About</a></li>
         <li><a href="#projects">Projects</a></li>
-        <li><a href="#learning">Learning</a></li>
+        <li><a href="#learning">Certifications</a></li>
         <li><a href="#skills">Skills</a></li>
         <li><a href="#contact">Contact</a></li>
       </ul>
@@ -1070,6 +1090,22 @@
       requestAnimationFrame(step);
     }
     nameEl.addEventListener("click", play);
+
+    // Highlight the tab for the section on screen
+    var tabs = document.querySelectorAll("nav a");
+    function setActive(id) {
+      tabs.forEach(function (a) {
+        var on = a.getAttribute("href") === "#" + id;
+        a.classList.toggle("active", on);
+        if (on) a.setAttribute("aria-current", "true"); else a.removeAttribute("aria-current");
+      });
+    }
+    if ("IntersectionObserver" in window) {
+      var seen = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) { if (e.isIntersecting) setActive(e.target.id); });
+      }, { rootMargin: "-45% 0px -50% 0px" });
+      document.querySelectorAll("section.block").forEach(function (sec) { seen.observe(sec); });
+    }
     play();
   })();
 </script>
