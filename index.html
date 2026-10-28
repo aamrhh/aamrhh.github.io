@@ -13,7 +13,7 @@
   (function () {
     try {
       var saved = localStorage.getItem("theme");
-            if (saved === "light" || saved === "dark") {
+      if (saved === "light" || saved === "dark") {
         document.documentElement.setAttribute("data-theme", saved);
       } else {
         document.documentElement.setAttribute("data-theme", "dark");
@@ -748,6 +748,226 @@
   }
 
 
+  /* live indicator */
+  .live-dot {
+    position: relative;
+    flex: none;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: #22C55E;
+  }
+  .live-dot::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: #22C55E;
+    animation: live-ping 1.6s ease-out infinite;
+  }
+  @keyframes live-ping {
+    0% { transform: scale(1); opacity: 0.7; }
+    100% { transform: scale(2.8); opacity: 0; }
+  }
+  .pbtn.solid .live-dot { background: #fff; box-shadow: 0 0 0 2px color-mix(in srgb, #22C55E 70%, transparent); }
+  .pbtn.solid .live-dot::after { background: #fff; }
+  :root[data-theme="dark"] .pbtn.solid .live-dot,
+  :root[data-theme="dark"] .pbtn.solid .live-dot::after { background: #15803D; }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .pbtn.solid .live-dot,
+    :root:not([data-theme="light"]) .pbtn.solid .live-dot::after { background: #15803D; }
+  }
+  .pbtn.live { position: relative; }
+
+  /* live banner at the top of the details panel */
+  .livebar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px 20px;
+    flex-wrap: wrap;
+    padding: 16px 18px;
+    margin-bottom: 18px;
+    border-radius: 12px;
+    background: color-mix(in srgb, var(--c-soft) 70%, var(--surface));
+    border: 1px solid color-mix(in srgb, var(--c) 40%, transparent);
+  }
+  .livebar p { margin: 0; }
+  .livebar-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 700;
+    font-size: 17px;
+  }
+  .livebar-title .live-dot { width: 10px; height: 10px; }
+  .livebar-text { color: var(--muted); font-size: 15px; margin-top: 2px !important; max-width: 36em; }
+
+  /* "try it" box in a tab */
+  .tryit {
+    padding: 14px 16px;
+    border-radius: 10px;
+    background: color-mix(in srgb, var(--c-soft) 70%, var(--surface));
+    border: 1px dashed var(--c);
+  }
+  .tryit p { margin: 0 0 12px !important; }
+
+  /* ---------- Project details panel ---------- */
+  button.pbtn { font: inherit; font-size: 15px; font-weight: 600; cursor: pointer; }
+  .details {
+    --c: var(--rose);
+    --c-soft: var(--rose-soft);
+    width: min(980px, calc(100% - 32px));
+    max-height: calc(100vh - 48px);
+    padding: 0;
+    border: 1px solid var(--line);
+    border-top: 5px solid var(--c);
+    border-radius: 16px;
+    background: var(--surface);
+    color: var(--ink);
+    overflow: hidden;
+  }
+  .details.c-blue { --c: var(--blue); --c-soft: var(--blue-soft); }
+  .details[open] { display: flex; flex-direction: column; animation: dlg-in 0.22s ease-out; }
+  .details::backdrop { background: rgba(10, 12, 28, 0.6); backdrop-filter: blur(3px); }
+  @keyframes dlg-in { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+  .dhead {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 20px 24px 16px;
+    border-bottom: 1px solid var(--line);
+  }
+  .dkicker { margin: 0 0 2px; font-size: 14px; font-weight: 600; color: var(--c); }
+  .dhead h3 { font-size: 24px; font-weight: 700; }
+  .dclose {
+    flex: none;
+    width: 38px;
+    height: 38px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    border: 1px solid var(--line);
+    background: var(--bg);
+    color: var(--ink);
+    cursor: pointer;
+  }
+  .dclose:hover { border-color: var(--c); color: var(--c); }
+  .dclose svg { width: 16px; height: 16px; }
+  .dbody { overflow-y: auto; padding: 20px 24px 28px; }
+  .dlead { font-size: 18px; margin: 0 0 12px; max-width: 46em; }
+  .details .tags li { color: var(--c); background: var(--c-soft); }
+  .dsec { margin-top: 28px; }
+  .dsec h4, .dtext h4 {
+    font-family: "Bricolage Grotesque", sans-serif;
+    font-size: 19px;
+    font-weight: 700;
+    margin: 0 0 10px;
+  }
+  .dsec > p { margin: 0; max-width: 46em; }
+
+  .steps { list-style: none; counter-reset: st; margin: 0; padding: 0; display: grid; gap: 12px; }
+  .steps li {
+    counter-increment: st;
+    position: relative;
+    padding: 12px 16px 12px 56px;
+    border-radius: 10px;
+    background: color-mix(in srgb, var(--c-soft) 45%, var(--surface));
+    border: 1px solid var(--line);
+    max-width: 52em;
+  }
+  .steps li::before {
+    content: counter(st);
+    position: absolute;
+    left: 14px;
+    top: 12px;
+    width: 28px;
+    height: 28px;
+    line-height: 28px;
+    text-align: center;
+    border-radius: 50%;
+    font-size: 14px;
+    font-weight: 700;
+    color: #fff;
+    background: var(--c);
+  }
+  .steps strong { font-weight: 700; }
+
+  .dtabs {
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding-bottom: 4px;
+    margin-bottom: 14px;
+  }
+  .dtabs::-webkit-scrollbar { display: none; }
+  .dtabs button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    flex: none;
+    font: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 8px 14px;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    background: var(--bg);
+    color: var(--muted);
+    cursor: pointer;
+  }
+  .dtabs button:hover { color: var(--ink); border-color: var(--c); }
+  .dtabs button[aria-selected="true"] { background: var(--c); border-color: var(--c); color: #fff; }
+  .tab-num {
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    text-align: center;
+    border-radius: 50%;
+    font-size: 12px;
+    background: color-mix(in srgb, currentColor 18%, transparent);
+  }
+  .dpanel { display: grid; grid-template-columns: 1.35fr 1fr; gap: 22px; align-items: start; }
+  .dpanel[hidden] { display: none; }
+  .dshot {
+    display: block;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    background: #fff;
+  }
+  .dshot img { display: block; width: 100%; height: auto; transition: transform 0.25s ease; }
+  .dshot:hover img { transform: scale(1.02); }
+  .dtext p { margin: 0 0 16px; }
+  .dtext h4 { font-size: 16px; margin-bottom: 4px; color: var(--c); }
+  .dsec > .dnote { margin-top: 14px; }
+  .dnote {
+    font-size: 15px;
+    padding: 10px 14px;
+    border-radius: 8px;
+    background: var(--amber-soft);
+    border-left: 4px solid var(--amber);
+  }
+  .dlist { margin: 0; padding-left: 20px; max-width: 46em; }
+  .dlist li { padding: 2px 0; }
+  .dfoot { margin-top: 28px; }
+  :root[data-theme="dark"] .steps li::before,
+  :root[data-theme="dark"] .dtabs button[aria-selected="true"] { color: #111628; }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .steps li::before,
+    :root:not([data-theme="light"]) .dtabs button[aria-selected="true"] { color: #111628; }
+  }
+  @media (max-width: 760px) {
+    .details { width: 100%; max-width: 100%; height: 100%; max-height: 100%; margin: 0; border-radius: 0; border: 0; border-top: 5px solid var(--c); }
+    .dhead { padding: 16px; }
+    .dhead h3 { font-size: 20px; }
+    .dbody { padding: 16px 16px 28px; }
+    .dpanel { grid-template-columns: 1fr; gap: 14px; }
+    .steps li { padding-left: 52px; }
+  }
+
   /* ---------- Small screens ---------- */
   @media (max-width: 860px) {
     .hero { grid-template-columns: 1fr; gap: 32px; padding-top: 40px; }
@@ -778,6 +998,9 @@
     .forecast, .pt-next, .area { animation: none; opacity: 1; }
     .pulse { animation: none; }
     .pbtn { transition: none; }
+    .live-dot::after { animation: none; display: none; }
+    .details[open] { animation: none; }
+    .dshot img { transition: none; }
     #name .ch { transform: none; opacity: 1; animation: none !important; }
     #name::after { display: none; }
   }
@@ -875,11 +1098,9 @@
       <h2 id="aboutTitle"><span>About me</span></h2>
       <div class="prose">
         <p>I am a final-year Bachelor of Computer Science student at Universiti Teknologi MARA (UiTM), specialising in Big Data. I previously graduated with a Diploma in Computer Science, where I received the Vice-Chancellor's Award for making the Dean's List in every semester.</p>
-        <p>I have always been drawn to the "why" behind things. When I see a number or a trend, I want to understand why it looks that way and what is driving it. Data analytics gives me a structured way to follow that interest, turning raw data into evidence that explains patterns and supports better decisions. Beyond finding the cause, I also enjoy working out what can be done about it, and I am building the knowledge and experience to propose solutions that are grounded in data.</p>
-        <p>Through academic and personal projects, I have worked across the full analytics workflow, from collecting and cleaning data to modelling and presenting results. I have used Python, SQL and Power BI to analyse national blood donation trends, measure how oil prices affect the ringgit, and build machine learning models for text and classification tasks.</p>
-        <p>I am still early in my journey, but I learn quickly and genuinely enjoy picking up new tools and methods. Each project has taught me something practical, from being patient with messy data to explaining technical findings in a way people can act on. I am now eager to gain industry experience that will strengthen my skills in data science and analytics.</p>
+        <p>Throughout my journey as a Computer Science student, I have explored many areas, including software engineering, system development, algorithms, databases and cybersecurity. In our final semesters, we were divided into tracks, which led me to Big Data. Upon joining the track, I realised that working with data is what intrigues me the most. Without even noticing, I found myself enjoying the process of uncovering the reasons behind the numbers. It is even more rewarding when those insights help solve a real problem, and I enjoy being part of building that solution myself. That is what sparked my interest in data science and analytics, and I want to see how far I can go in this field.</p>
+        <p>I am still early in my journey and still exploring the tools and technologies in this field. I would love to keep building my knowledge in data science and analytics, while staying open to exploring other areas too. But I know for sure that each project has taught me something practical, from having a clear vision of the project, to being patient with the process, to coming up with solutions. I am now seeking an internship where I can keep learning and shaping my skills in the industry.</p>
         <dl class="facts">
-          
           <div class="fact"><dt>Dean's List</dt><dd>Every semester</dd><dd class="small">Diploma and degree, to date</dd></div>
           <div class="fact"><dt>Vice-Chancellor's Award</dt><dd>Diploma</dd><dd class="small">Awarded in 2025</dd></div>
         </dl>
@@ -913,10 +1134,11 @@
           <p>Analysed 20 years of crude oil prices and USD/MYR exchange rate data to measure how changes in oil prices affect the value of the Malaysian ringgit, using correlation and regression analysis in Python.</p>
           <p>Built and deployed an interactive Streamlit dashboard that walks through the analysis step by step, from data preparation to the final results. The dashboard updates automatically with the latest market data on weekdays. Markets are closed on weekends, so no new values are added then.</p>
           <ul class="tags" aria-label="Tools">
-            <li>Python</li><li>pandas</li><li>Correlation and regression</li><li>Streamlit</li>
+            <li>Python</li><li>pandas</li><li>scikit-learn</li><li>Correlation and regression</li><li>Plotly</li><li>Streamlit</li>
           </ul>
           <div class="links">
-            <a class="pbtn solid" href="https://ringgit-oil-analysis.streamlit.app" target="_blank" rel="noopener"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M9 2h5v5M14 2 7.5 8.5M12 9.5V13a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h3.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Open the live dashboard</a>
+            <button class="pbtn solid" type="button" data-open="oilDetails"><svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8 7.2v4M8 4.8v.1" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>View details</button>
+            <a class="pbtn outline live" href="https://ringgit-oil-analysis.streamlit.app" target="_blank" rel="noopener"><span class="live-dot" aria-hidden="true"></span>Open the live dashboard</a>
             <a class="pbtn outline" href="https://github.com/aamrhh/ringgit-oil-analysis" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 .5a11.5 11.5 0 0 0-3.64 22.41c.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.52-1.33-1.28-1.69-1.28-1.69-1.05-.71.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.77 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.84 1.19 3.1 0 4.42-2.7 5.4-5.26 5.68.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .5z"/></svg>View code on GitHub</a>
           </div>
         </article>
@@ -931,7 +1153,8 @@
             <li>Power BI</li><li>Python (pandas)</li><li>Data cleaning</li><li>Data visualisation</li>
           </ul>
           <div class="links">
-            <a class="pbtn solid" href="https://github.com/aamrhh/malaysia-blood-donation-analysis" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 .5a11.5 11.5 0 0 0-3.64 22.41c.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.52-1.33-1.28-1.69-1.28-1.69-1.05-.71.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.77 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.84 1.19 3.1 0 4.42-2.7 5.4-5.26 5.68.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .5z"/></svg>View project on GitHub</a>
+            <button class="pbtn solid" type="button" data-open="bloodDetails"><svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8 7.2v4M8 4.8v.1" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>View details</button>
+            <a class="pbtn outline" href="https://github.com/aamrhh/malaysia-blood-donation-analysis" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 .5a11.5 11.5 0 0 0-3.64 22.41c.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.52-1.33-1.28-1.69-1.28-1.69-1.05-.71.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.77 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.84 1.19 3.1 0 4.42-2.7 5.4-5.26 5.68.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .5z"/></svg>View code on GitHub</a>
           </div>
         </article>
 
@@ -1022,6 +1245,238 @@
   </div>
 </main>
 
+
+<!-- ===== PROJECT DETAILS: OIL AND RINGGIT ===== -->
+<dialog class="details c-blue" id="oilDetails" aria-labelledby="odTitle">
+  <div class="dhead">
+    <div>
+      <p class="dkicker">Project details</p>
+      <h3 id="odTitle">How Oil Prices Affect the Malaysian Ringgit (2005–2026)</h3>
+    </div>
+    <button class="dclose" type="button" data-close aria-label="Close project details">
+      <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 3.5l9 9M12.5 3.5l-9 9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+  <div class="dbody">
+    <div class="livebar">
+      <div>
+        <p class="livebar-title"><span class="live-dot" aria-hidden="true"></span>This dashboard is live</p>
+        <p class="livebar-text">Rates update automatically every working day. Visit it to see today's rates and look up any day since 2005.</p>
+      </div>
+      <a class="pbtn solid live" href="https://ringgit-oil-analysis.streamlit.app" target="_blank" rel="noopener"><span class="live-dot" aria-hidden="true"></span>Visit the live dashboard</a>
+    </div>
+    <p class="dlead">A live Streamlit dashboard that explains how world oil prices and the US dollar affect the Malaysian ringgit, written in plain language so anyone can follow it, not only finance experts.</p>
+    <ul class="tags" aria-label="Tools">
+      <li>Python</li><li>pandas</li><li>scikit-learn</li><li>Plotly</li><li>Streamlit</li><li>Bank Negara Malaysia data</li><li>FRED</li>
+    </ul>
+
+    <section class="dsec">
+      <h4>Why I built this</h4>
+      <p>I built this project to expand my understanding of financial markets. I wanted to learn how global factors, such as oil prices and the strength of the US dollar, affect the Malaysian ringgit, and to practise working with real market data that changes every day.</p>
+    </section>
+
+    <section class="dsec">
+      <h4>How I built it</h4>
+      <ol class="steps">
+        <li><strong>Collected the data.</strong> Daily ringgit exchange rates from Bank Negara Malaysia (through data.gov.my), plus the world oil price and a US dollar index from FRED, from 2005 to today.</li>
+        <li><strong>Cleaned and combined it in Python.</strong> Used pandas to line up the dates from different sources and to handle weekends and holidays, when no new rates are published.</li>
+        <li><strong>Analysed the relationship.</strong> Used correlation and regression (scikit-learn) to measure how closely oil and the ringgit move together, and compared the ringgit with the US dollar index and other currencies to separate the effect of a strong US dollar.</li>
+        <li><strong>Designed the dashboard.</strong> Built it in Streamlit with Plotly charts, using simple words, clear labels such as "Ringgit stronger" and short explanations under each chart.</li>
+        <li><strong>Deployed and automated it.</strong> Published it on Streamlit Community Cloud. It pulls the latest data automatically, so the numbers and summaries stay current.</li>
+      </ol>
+    </section>
+
+    <section class="dsec">
+      <h4>Dashboard sections</h4>
+      <div class="dtabs" role="tablist" aria-label="Dashboard sections"><button type="button" role="tab" id="ot1" aria-controls="op1" aria-selected="true" tabindex="0"><span class="tab-num">1</span>Ringgit vs trading partners</button><button type="button" role="tab" id="ot2" aria-controls="op2" aria-selected="false" tabindex="-1"><span class="tab-num">2</span>Look up any day</button><button type="button" role="tab" id="ot3" aria-controls="op3" aria-selected="false" tabindex="-1"><span class="tab-num">3</span>Oil and the ringgit over time</button><button type="button" role="tab" id="ot4" aria-controls="op4" aria-selected="false" tabindex="-1"><span class="tab-num">4</span>Is it only the US dollar?</button><button type="button" role="tab" id="ot5" aria-controls="op5" aria-selected="false" tabindex="-1"><span class="tab-num">5</span>Key takeaways</button></div>
+      <div class="dpanel" role="tabpanel" id="op1" aria-labelledby="ot1">
+        <a class="dshot" href="images/oil1.jpg" target="_blank" rel="noopener" title="Open full size">
+          <img src="images/oil1.jpg" alt="Screenshot of the Ringgit vs trading partners section of the oil and ringgit dashboard" loading="lazy" width="1280" height="620">
+        </a>
+        <div class="dtext">
+          <h4>What it shows</h4>
+          <p>Shows whether the ringgit is stronger or weaker against the US dollar, Chinese yuan and Singapore dollar, compared with 1 month, 1 year or 5 years ago. Each card has a small trend line and a clear label such as "Ringgit stronger" or "Ringgit weaker".</p>
+          <h4>Why I included it</h4>
+          <p>Most news only talks about the ringgit against the US dollar. I added China and Singapore because, together with the United States, they are Malaysia's three biggest trading partners, making up about 43% of all trade in 2025 (DOSM).</p>
+        </div>
+      </div>
+      <div class="dpanel" role="tabpanel" id="op2" aria-labelledby="ot2" hidden>
+        <a class="dshot" href="images/oil2.jpg" target="_blank" rel="noopener" title="Open full size">
+          <img src="images/oil2.jpg" alt="Screenshot of the Look up any day section of the oil and ringgit dashboard" loading="lazy" width="1280" height="620">
+        </a>
+        <div class="dtext">
+          <h4>What it shows</h4>
+          <p>Turns exchange rates into something easy to picture: how much foreign currency RM1,000 buys today. Users can also pick any date to see that day's exchange rates and oil price.</p>
+          <h4>Why I included it</h4>
+          <p>Exchange rates can feel abstract, so I wanted ordinary readers to see what a change means for their own money. Bank Negara only publishes rates on working days, so if a user picks a weekend, a holiday or a day before the rate is out, the dashboard explains this and shows the latest rate before that date.</p>
+          <div class="tryit">
+            <p><strong>Try it yourself.</strong> Open the live dashboard, pick any date, and see that day's ringgit rates and oil price.</p>
+            <a class="pbtn solid live" href="https://ringgit-oil-analysis.streamlit.app" target="_blank" rel="noopener"><span class="live-dot" aria-hidden="true"></span>Look up a date</a>
+          </div>
+        </div>
+      </div>
+      <div class="dpanel" role="tabpanel" id="op3" aria-labelledby="ot3" hidden>
+        <a class="dshot" href="images/oil3.jpg" target="_blank" rel="noopener" title="Open full size">
+          <img src="images/oil3.jpg" alt="Screenshot of the Oil and the ringgit over time section of the oil and ringgit dashboard" loading="lazy" width="1280" height="620">
+        </a>
+        <div class="dtext">
+          <h4>What it shows</h4>
+          <p>A long-term chart of the ringgit against the US dollar and the world oil price, with buttons for the last 5 years, 12 years or since 2005. Key events are marked, such as the 2014 oil price crash, COVID-19 and the strong US dollar in 2022. Below it, four simple steps explain how a higher oil price can strengthen the ringgit.</p>
+          <h4>Why I included it</h4>
+          <p>This is the main question of the project. For many years, oil and the ringgit moved like a mirror: when oil rose, the ringgit got stronger. Since 2022, that link has broken, which shows that oil is not the only force moving the ringgit.</p>
+        </div>
+      </div>
+      <div class="dpanel" role="tabpanel" id="op4" aria-labelledby="ot4" hidden>
+        <a class="dshot" href="images/oil4.jpg" target="_blank" rel="noopener" title="Open full size">
+          <img src="images/oil4.jpg" alt="Screenshot of the Is it only the US dollar? section of the oil and ringgit dashboard" loading="lazy" width="1280" height="620">
+        </a>
+        <div class="dtext">
+          <h4>What it shows</h4>
+          <p>Compares how the ringgit moved over the last month against Malaysia's top trading partners and its ASEAN neighbours, with a short written summary next to the chart.</p>
+          <h4>Why I included it</h4>
+          <p>When the ringgit moves against the US dollar, it is hard to tell whether the ringgit changed or the US dollar did. Comparing it with several currencies at once helps answer that question.</p>
+        </div>
+      </div>
+      <div class="dpanel" role="tabpanel" id="op5" aria-labelledby="ot5" hidden>
+        <a class="dshot" href="images/oil5.jpg" target="_blank" rel="noopener" title="Open full size">
+          <img src="images/oil5.jpg" alt="Screenshot of the Key takeaways section of the oil and ringgit dashboard" loading="lazy" width="1280" height="620">
+        </a>
+        <div class="dtext">
+          <h4>What it shows</h4>
+          <p>Three short summaries of the last month: how much oil moved, how much the US dollar moved against other major currencies, and the ringgit's strongest and weakest days.</p>
+          <h4>Why I included it</h4>
+          <p>Not every visitor will read every chart. These cards give a quick answer, and their text is written automatically from the latest data, so they stay up to date.</p>
+        </div>
+      </div>
+      <p class="dnote">The numbers in these screenshots were taken in October 2026. The live dashboard updates automatically, so its numbers will be different.</p>
+    </section>
+
+    <section class="dsec">
+      <h4>Limitations</h4>
+      <ul class="dlist">
+        <li>Correlation shows that two things move together, not that one causes the other. Interest rates, the US dollar and investor mood also move the ringgit.</li>
+        <li>Bank Negara publishes exchange rates on working days only, so weekends and public holidays have no new values.</li>
+        <li>Oil and US dollar index data from FRED can lag a few days behind the ringgit data.</li>
+      </ul>
+    </section>
+
+    <div class="links dfoot">
+      <a class="pbtn solid live" href="https://ringgit-oil-analysis.streamlit.app" target="_blank" rel="noopener"><span class="live-dot" aria-hidden="true"></span>Open the live dashboard</a>
+      <a class="pbtn outline" href="https://github.com/aamrhh/ringgit-oil-analysis" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 .5a11.5 11.5 0 0 0-3.64 22.41c.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.52-1.33-1.28-1.69-1.28-1.69-1.05-.71.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.77 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.84 1.19 3.1 0 4.42-2.7 5.4-5.26 5.68.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .5z"/></svg>View code on GitHub</a>
+    </div>
+  </div>
+</dialog>
+
+<!-- ===== PROJECT DETAILS: BLOOD DONATION ===== -->
+<dialog class="details c-rose" id="bloodDetails" aria-labelledby="bdTitle">
+  <div class="dhead">
+    <div>
+      <p class="dkicker">Project details</p>
+      <h3 id="bdTitle">Malaysian Blood Donation Trend Dashboard</h3>
+    </div>
+    <button class="dclose" type="button" data-close aria-label="Close project details">
+      <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 3.5l9 9M12.5 3.5l-9 9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+  <div class="dbody">
+    <p class="dlead">A five-page Power BI dashboard that explores when, where and how Malaysians donate blood, using daily national data from January 2020 to May 2026.</p>
+    <ul class="tags" aria-label="Tools">
+      <li>Power BI</li><li>Python</li><li>pandas</li><li>NumPy</li><li>DOSM open data</li>
+    </ul>
+
+    <section class="dsec">
+      <h4>Why I built this</h4>
+      <p>A steady blood supply depends on a steady flow of donors, but donations are not spread evenly across the year, the week or the country. I wanted to find out when and where Malaysians donate most, which blood types are most and least common, and whether weekends and public holidays change how people donate. These patterns could help plan blood donation drives at the right time and place.</p>
+    </section>
+
+    <section class="dsec">
+      <h4>How I built it</h4>
+      <ol class="steps">
+        <li><strong>Defined the questions.</strong> Listed what I wanted to learn: the overall trend, differences between states, the share of each blood type, and the effect of weekends and public holidays.</li>
+        <li><strong>Collected the data.</strong> Used open data from the Department of Statistics Malaysia (DOSM) on daily blood donations by state and blood type.</li>
+        <li><strong>Cleaned and prepared it in Python.</strong> Used pandas and NumPy to check for missing values, fix data types and reshape the data. Added new columns for the day of the week and public holiday names, so the dashboard could compare normal days with holidays.</li>
+        <li><strong>Built the dashboard in Power BI.</strong> Designed five pages that each answer one question, with slicers, a map and filters so users can explore the data themselves.</li>
+        <li><strong>Summarised the findings.</strong> Wrote up the key insights and the limits of the data in the project README.</li>
+      </ol>
+    </section>
+
+    <section class="dsec">
+      <h4>Dashboard pages</h4>
+      <div class="dtabs" role="tablist" aria-label="Dashboard pages"><button type="button" role="tab" id="bt1" aria-controls="bp1" aria-selected="true" tabindex="0"><span class="tab-num">1</span>National Overview</button><button type="button" role="tab" id="bt2" aria-controls="bp2" aria-selected="false" tabindex="-1"><span class="tab-num">2</span>State Analysis</button><button type="button" role="tab" id="bt3" aria-controls="bp3" aria-selected="false" tabindex="-1"><span class="tab-num">3</span>Blood Type Analysis</button><button type="button" role="tab" id="bt4" aria-controls="bp4" aria-selected="false" tabindex="-1"><span class="tab-num">4</span>Public Holiday Impact</button><button type="button" role="tab" id="bt5" aria-controls="bp5" aria-selected="false" tabindex="-1"><span class="tab-num">5</span>Monthly Explorer</button></div>
+            <div class="dpanel" role="tabpanel" id="bp1" aria-labelledby="bt1">
+              <a class="dshot" href="images/pg1.jpg" target="_blank" rel="noopener" title="Open full size">
+                <img src="images/pg1.jpg" alt="Screenshot of the National Overview page of the blood donation dashboard" loading="lazy" width="1280" height="718">
+              </a>
+              <div class="dtext">
+                <h4>What it shows</h4>
+                <p>Shows the overall donation trend from January 2020 to May 2026, with the total number of donations (about 4 million) and the daily average (about 1,520 donations a day). A year slider lets users focus on any period.</p>
+                <h4>Key finding</h4>
+                <p>Donations stayed steady during the COVID-19 years of 2020 and 2021, then rose sharply in 2022, which suggests a strong recovery after the pandemic. They remained high until 2025.</p>
+                <p class="dnote">The drop in 2026 is not a fall in donations. The data for 2026 only covers January to May.</p>
+              </div>
+            </div>
+            <div class="dpanel" role="tabpanel" id="bp2" aria-labelledby="bt2" hidden>
+              <a class="dshot" href="images/pg2.jpg" target="_blank" rel="noopener" title="Open full size">
+                <img src="images/pg2.jpg" alt="Screenshot of the State Analysis page of the blood donation dashboard" loading="lazy" width="1280" height="718">
+              </a>
+              <div class="dtext">
+                <h4>What it shows</h4>
+                <p>Compares donations across states using an interactive map and a ranked bar chart. Selecting a state on the map shows its total donations and blood type breakdown, and a date range filter narrows the period.</p>
+                <h4>Key finding</h4>
+                <p>W.P. Kuala Lumpur records far more donations than any other state, at over 1.2 million. Sabah and Sarawak also rank higher than several states in Peninsular Malaysia.</p>
+              </div>
+            </div>
+            <div class="dpanel" role="tabpanel" id="bp3" aria-labelledby="bt3" hidden>
+              <a class="dshot" href="images/pg3.jpg" target="_blank" rel="noopener" title="Open full size">
+                <img src="images/pg3.jpg" alt="Screenshot of the Blood Type Analysis page of the blood donation dashboard" loading="lazy" width="1280" height="718">
+              </a>
+              <div class="dtext">
+                <h4>What it shows</h4>
+                <p>Shows the share of each blood type, how donations for each type changed over the years, and the blood type mix in every state.</p>
+                <h4>Key finding</h4>
+                <p>Type O makes up the largest share at 42.62%, followed by Type B (27.06%), Type A (24.66%) and Type AB (5.66%). The mix is very similar across all states, and the small share of Type AB mainly reflects how rare it is in the population.</p>
+              </div>
+            </div>
+            <div class="dpanel" role="tabpanel" id="bp4" aria-labelledby="bt4" hidden>
+              <a class="dshot" href="images/pg4.jpg" target="_blank" rel="noopener" title="Open full size">
+                <img src="images/pg4.jpg" alt="Screenshot of the Public Holiday Impact page of the blood donation dashboard" loading="lazy" width="1280" height="718">
+              </a>
+              <div class="dtext">
+                <h4>What it shows</h4>
+                <p>Looks at which days of the week and which public holidays have the highest average donations.</p>
+                <h4>Key finding</h4>
+                <p>Sunday has the highest average donations, followed by Saturday, while Monday and Friday are the lowest. Donations are generally higher on public holidays than on normal weekdays, with Labour Day leading, followed by National Day, Wesak Day, Malaysia Day and Deepavali.</p>
+              </div>
+            </div>
+            <div class="dpanel" role="tabpanel" id="bp5" aria-labelledby="bt5" hidden>
+              <a class="dshot" href="images/pg5.jpg" target="_blank" rel="noopener" title="Open full size">
+                <img src="images/pg5.jpg" alt="Screenshot of the Monthly Explorer page of the blood donation dashboard" loading="lazy" width="1280" height="718">
+              </a>
+              <div class="dtext">
+                <h4>What it shows</h4>
+                <p>Lets users pick any month and year to see the total donations, the daily average and the public holidays that fell in that month.</p>
+                <h4>Key finding</h4>
+                <p>For example, May 2020 recorded about 40,000 donations, with a daily average of about 1,280, in a month that included Hari Raya Aidilfitri, Labour Day and Wesak Day.</p>
+              </div>
+            </div>
+    </section>
+
+    <section class="dsec">
+      <h4>Limitations</h4>
+      <ul class="dlist">
+        <li>Blood types are not split by Rhesus factor (positive or negative).</li>
+        <li>Only official public holidays are included, not extra or replacement holidays.</li>
+        <li>There is no data on blood demand, so the dashboard cannot show shortages.</li>
+        <li>The data covers donation counts only, not donor age, gender or other details.</li>
+      </ul>
+    </section>
+
+    <div class="links dfoot">
+      <a class="pbtn solid" href="https://github.com/aamrhh/malaysia-blood-donation-analysis" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 .5a11.5 11.5 0 0 0-3.64 22.41c.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.52-1.33-1.28-1.69-1.28-1.69-1.05-.71.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.77 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.84 1.19 3.1 0 4.42-2.7 5.4-5.26 5.68.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .5z"/></svg>View project on GitHub</a>
+    </div>
+  </div>
+</dialog>
+
 <footer>
   <div class="wrap">Made by aamrhh. Hosted on GitHub Pages. &copy; <span id="year">2026</span></div>
 </footer>
@@ -1094,6 +1549,42 @@
       requestAnimationFrame(step);
     }
     nameEl.addEventListener("click", play);
+    // Project details panels
+    document.querySelectorAll("[data-open]").forEach(function (btn) {
+      var dlg = document.getElementById(btn.getAttribute("data-open"));
+      if (!dlg || !dlg.showModal) return;
+      btn.addEventListener("click", function () {
+        dlg.showModal();
+        document.body.style.overflow = "hidden";
+      });
+      dlg.addEventListener("close", function () {
+        document.body.style.overflow = "";
+        btn.focus();
+      });
+      dlg.querySelectorAll("[data-close]").forEach(function (c) {
+        c.addEventListener("click", function () { dlg.close(); });
+      });
+      dlg.addEventListener("click", function (e) { if (e.target === dlg) dlg.close(); });
+
+      var tabBtns = Array.prototype.slice.call(dlg.querySelectorAll('[role="tab"]'));
+      function pick(t) {
+        tabBtns.forEach(function (b) {
+          var on = b === t;
+          b.setAttribute("aria-selected", on ? "true" : "false");
+          b.tabIndex = on ? 0 : -1;
+          document.getElementById(b.getAttribute("aria-controls")).hidden = !on;
+        });
+      }
+      tabBtns.forEach(function (b, i) {
+        b.addEventListener("click", function () { pick(b); });
+        b.addEventListener("keydown", function (e) {
+          var n = null;
+          if (e.key === "ArrowRight") n = tabBtns[(i + 1) % tabBtns.length];
+          if (e.key === "ArrowLeft") n = tabBtns[(i - 1 + tabBtns.length) % tabBtns.length];
+          if (n) { e.preventDefault(); pick(n); n.focus(); }
+        });
+      });
+    });
 
     // Highlight the tab for the section on screen
     var tabs = document.querySelectorAll("nav a");
