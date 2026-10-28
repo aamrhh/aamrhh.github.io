@@ -812,6 +812,28 @@
   }
   .tryit p { margin: 0 0 12px !important; }
 
+  /* read more in About me */
+  .about-more { animation: more-in 0.3s ease-out; }
+  @keyframes more-in { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
+  .readmore {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin: 4px 0 4px;
+    padding: 8px 16px;
+    font: inherit;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--violet);
+    background: var(--violet-soft);
+    border: 1px solid color-mix(in srgb, var(--violet) 40%, transparent);
+    border-radius: 999px;
+    cursor: pointer;
+  }
+  .readmore:hover { border-color: var(--violet); }
+  .readmore svg { width: 16px; height: 16px; transition: transform 0.2s ease; }
+  .readmore[aria-expanded="true"] svg { transform: rotate(180deg); }
+
   /* ---------- Project details panel ---------- */
   button.pbtn { font: inherit; font-size: 15px; font-weight: 600; cursor: pointer; }
   .details {
@@ -998,6 +1020,8 @@
     .forecast, .pt-next, .area { animation: none; opacity: 1; }
     .pulse { animation: none; }
     .pbtn { transition: none; }
+    .about-more { animation: none; }
+    .readmore svg { transition: none; }
     .live-dot::after { animation: none; display: none; }
     .details[open] { animation: none; }
     .dshot img { transition: none; }
@@ -1098,8 +1122,14 @@
       <h2 id="aboutTitle"><span>About me</span></h2>
       <div class="prose">
         <p>I am a final-year Bachelor of Computer Science student at Universiti Teknologi MARA (UiTM), specialising in Big Data. I previously graduated with a Diploma in Computer Science, where I received the Vice-Chancellor's Award for making the Dean's List in every semester.</p>
-        <p>Throughout my journey as a Computer Science student, I have explored many areas, including software engineering, system development, algorithms, databases and cybersecurity. In our final semesters, we were divided into tracks, which led me to Big Data. Upon joining the track, I realised that working with data is what intrigues me the most. Without even noticing, I found myself enjoying the process of uncovering the reasons behind the numbers. It is even more rewarding when those insights help solve a real problem, and I enjoy being part of building that solution myself. That is what sparked my interest in data science and analytics, and I want to see how far I can go in this field.</p>
-        <p>I am still early in my journey and still exploring the tools and technologies in this field. I would love to keep building my knowledge in data science and analytics, while staying open to exploring other areas too. But I know for sure that each project has taught me something practical, from having a clear vision of the project, to being patient with the process, to coming up with solutions. I am now seeking an internship where I can keep learning and shaping my skills in the industry.</p>
+        <div class="about-more" id="aboutMore" hidden>
+          <p>Throughout my journey as a Computer Science student, I have explored many areas, including software engineering, system development, algorithms, databases and cybersecurity. In our final semesters, we were divided into tracks, which led me to Big Data. Upon joining the track, I realised that working with data is what intrigues me the most. Without even noticing, I found myself enjoying the process of uncovering the reasons behind the numbers. It is even more rewarding when those insights help solve a real problem, and I enjoy being part of building that solution myself. That is what sparked my interest in data science and analytics, and I want to see how far I can go in this field.</p>
+          <p>I am still early in my journey and still exploring the tools and technologies in this field. I would love to keep building my knowledge in data science and analytics, while staying open to exploring other areas too. But I know for sure that each project has taught me something practical, from having a clear vision of the project, to being patient with the process, to coming up with solutions. I am now seeking an internship where I can keep learning and shaping my skills in the industry.</p>
+        </div>
+        <button class="readmore" type="button" aria-expanded="false" aria-controls="aboutMore">
+          <span class="readmore-label">Read more about me</span>
+          <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
         <dl class="facts">
           <div class="fact"><dt>Dean's List</dt><dd>Every semester</dd><dd class="small">Diploma and degree, to date</dd></div>
           <div class="fact"><dt>Vice-Chancellor's Award</dt><dd>Diploma</dd><dd class="small">Awarded in 2025</dd></div>
@@ -1229,7 +1259,7 @@
       <div class="prose">
         <p>The best way to reach me is a message on LinkedIn. You can also see my work on GitHub.</p>
         <div class="contact-links">
-          <!-- CHANGE THIS: put your own LinkedIn link below -->
+          
           <a class="contact-card li" href="https://www.linkedin.com/in/amirah-najihah-689331308" target="_blank" rel="noopener">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.98 3.5A2.5 2.5 0 1 1 5 8.5a2.5 2.5 0 0 1-.02-5zM3 9.75h4V21H3zM9.5 9.75h3.8v1.6h.06c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.77 2.65 4.77 6.1V21h-4v-4.95c0-1.18-.02-2.7-1.65-2.7-1.65 0-1.9 1.29-1.9 2.62V21h-4z"/></svg>
             <div><strong>LinkedIn</strong><span>Send me a message</span></div>
@@ -1549,6 +1579,17 @@
       requestAnimationFrame(step);
     }
     nameEl.addEventListener("click", play);
+
+    // Read more in About me
+    var moreBtn = document.querySelector(".readmore");
+    var moreBox = document.getElementById("aboutMore");
+    moreBtn.addEventListener("click", function () {
+      var open = moreBtn.getAttribute("aria-expanded") === "true";
+      moreBox.hidden = open;
+      moreBtn.setAttribute("aria-expanded", open ? "false" : "true");
+      moreBtn.querySelector(".readmore-label").textContent = open ? "Read more about me" : "Show less";
+      if (open) document.getElementById("about").scrollIntoView({ behavior: "smooth", block: "start" });
+    });
     // Project details panels
     document.querySelectorAll("[data-open]").forEach(function (btn) {
       var dlg = document.getElementById(btn.getAttribute("data-open"));
@@ -1595,12 +1636,27 @@
         if (on) a.setAttribute("aria-current", "true"); else a.removeAttribute("aria-current");
       });
     }
-    if ("IntersectionObserver" in window) {
-      var seen = new IntersectionObserver(function (entries) {
-        entries.forEach(function (e) { if (e.isIntersecting) setActive(e.target.id); });
-      }, { rootMargin: "-45% 0px -50% 0px" });
-      document.querySelectorAll("section.block").forEach(function (sec) { seen.observe(sec); });
+    var sections = Array.prototype.slice.call(document.querySelectorAll("section.block"));
+    var clickedId = null, clickTimer = null;
+    function update() {
+      if (clickedId) return;
+      var atBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4;
+      if (atBottom) { setActive(sections[sections.length - 1].id); return; }
+      var line = window.innerHeight * 0.4, current = null;
+      sections.forEach(function (sec) { if (sec.getBoundingClientRect().top <= line) current = sec.id; });
+      setActive(current);
     }
+    tabs.forEach(function (a) {
+      a.addEventListener("click", function () {
+        clickedId = a.getAttribute("href").slice(1);
+        setActive(clickedId);
+        clearTimeout(clickTimer);
+        clickTimer = setTimeout(function () { clickedId = null; }, 900);
+      });
+    });
+    window.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
+    update();
     play();
   })();
 </script>
