@@ -634,6 +634,9 @@
     background: var(--k-soft);
     border: 1px solid color-mix(in srgb, var(--k) 35%, transparent);
   }
+  /* relevant coursework: purple to teal, set apart from the skill groups */
+  .skill-row.coursework { --k: var(--violet); --k-soft: color-mix(in srgb, var(--violet-soft) 50%, var(--teal-soft)); border-bottom: 0; }
+  .skill-row.coursework dt::before { background: linear-gradient(135deg, var(--violet), var(--teal)); }
   /* one colour per skill group */
   .skill-row:nth-child(1) { --k: var(--teal);   --k-soft: var(--teal-soft); }
   .skill-row:nth-child(2) { --k: var(--violet); --k-soft: var(--violet-soft); }
@@ -1232,7 +1235,7 @@
       <dl class="skill-rows">
         <div class="skill-row">
           <dt>Programming</dt>
-          <dd><ul><li>Python</li><li>SQL</li><li>Java</li></ul></dd>
+          <dd><ul><li>Python</li><li>SQL</li><li>Java</li><li>Data Structures &amp; Algorithms (Java)</li></ul></dd>
         </div>
         <div class="skill-row">
           <dt>Data analysis</dt>
@@ -1249,6 +1252,10 @@
         <div class="skill-row">
           <dt>Tools</dt>
           <dd><ul><li>Power BI</li><li>Microsoft Excel</li><li>Streamlit</li><li>Jupyter Notebook</li><li>Google Colab</li><li>VS Code</li><li>Git and GitHub</li></ul></dd>
+        </div>
+        <div class="skill-row coursework">
+          <dt>Relevant coursework</dt>
+          <dd><ul><li>Data Structures (Java)</li><li>Algorithm Analysis and Design</li><li>Data Mining</li><li>Machine Learning</li></ul></dd>
         </div>
       </dl>
     </section>
